@@ -28,16 +28,16 @@ class FeatureController {
 
 		FeatureExtraction	m_feature;		// CHANGE TO ARRAY OF FEATURES?
 
-		float*				m_buffer;
-		float*				m_reader;		// pointer to read buffer
-		float*				m_writer;		// pointer to write buffer
+		SAMPLE*				m_buffer;
+		SAMPLE*				m_reader;		// pointer to read buffer
+		SAMPLE*				m_writer;		// pointer to write buffer
 
 	public:
 		FeatureController(FeatureSystem systemObj);
 
-		FeatureExtraction	selectFeature(FeatureSystem systemObj);
+		FeatureExtraction	setFeature();	// create new Feature
 
-		float*				get_inputAudio();
+		SAMPLE*				get_inputAudio();
 		void				write_audio(float* buffer, float* readPointer, float* writePointer);
 
 		void				visualize(float* buffer);

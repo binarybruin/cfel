@@ -21,10 +21,12 @@
 
 #include "FeatureSystem.h"
 
+typedef float SAMPLE;
+
 class FeatureExtraction {
 	private:
 		// input parameters
-		float*			m_signal;
+		SAMPLE*			m_signal;
 		int				m_bufferSize;
 		int				m_fs;
 		int				m_winSize;
@@ -38,10 +40,10 @@ class FeatureExtraction {
 		int				m_nCols;
 
 	public:
-		FeatureExtraction();
+		FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize);
 		//FeatureExtraction(FeatureSystem systemObj);
 
-		float*			get_signal();
+		SAMPLE*			get_signal();
 		void			set_signal(float* signal);
 		int				get_bufferSize();
 		void			set_bufferSize(int bufferSize);
@@ -54,7 +56,7 @@ class FeatureExtraction {
 		
 		virtual void	preprocess();
 
-		float**			get_feature();
+		SAMPLE**		get_feature();
 		virtual void	calculate_feature();
 		int				get_nRows();
 		int				get_nCols();
