@@ -39,7 +39,7 @@ class FeatureExtraction {
 
 	public:
 		FeatureExtraction();
-		FeatureExtraction(FeatureSystem systemObj);
+		//FeatureExtraction(FeatureSystem systemObj);
 
 		float*			get_signal();
 		void			set_signal(float* signal);
