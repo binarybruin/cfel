@@ -27,7 +27,7 @@ class FeatureExtraction {
 	private:
 		// input parameters
 		SAMPLE*			m_signal;
-		int				m_bufferSize;
+		int				m_bufSize;
 		int				m_fs;
 		int				m_winSize;
 		int				m_hopSize;
@@ -41,12 +41,11 @@ class FeatureExtraction {
 
 	public:
 		FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize);
-		//FeatureExtraction(FeatureSystem systemObj);
 
 		SAMPLE*			get_signal();
 		void			set_signal(float* signal);
-		int				get_bufferSize();
-		void			set_bufferSize(int bufferSize);
+		int				get_bufSize();
+		void			set_bufSize(int bufSize);
 		int				get_fs();
 		void			set_fs(int fs);
 		int				get_winSize();

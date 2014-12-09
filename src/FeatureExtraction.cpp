@@ -5,14 +5,17 @@ using namespace FeatureExtraction;
 
 // constructors
 
-FeatureExtraction(SAMPLE* signal, int bufferSize, int fs, int winSize, int hopSize){
-	set_signal(sginal);
-	set_bufSize(
+FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize){
+	set_signal(signal);
+	set_bufSize(bufSize);
+	set_fs(fs);
+	set_winSize(winSize);
+	set_hopSize(hopSize);
 } 
 
 // getters and setters
 
-float* get_signal(){
+SAMPLE* get_signal(){
 	if (this->m_signal == NULL){
 		printf("m_signal is null\n");
 		return 1.0;
@@ -22,22 +25,23 @@ float* get_signal(){
 	}
 }
 
-void set_signal(float* signal){
+void set_signal(SAMPLE* signal){
 	if (signal == NULL){
-		printf("signal is null\n");
+		printf("input signal is null\n");
 		return;
 	}
 	else{
+		this->m_signal = (SAMPLE*)malloc(sizeof(SAMPLE)*bufSize);
 		this->m_signal = signal;
 	}
 }
 
-int get_bufferSize(){
-	return this->m_bufferSize;
+int get_bufSize(){
+	return this->m_bufSize;
 }
 
-void set_bufferSize(int bufferSize){
-	this->m_bufferSize = bufferSize;
+void set_bufSize(int bufSize){
+	this->m_bufSize = bufSize;
 }
 
 int get_fs(){
@@ -57,13 +61,12 @@ void set_winSize(int winSize){
 }
 
 int get_hopSize(){
-	return this->m_winSize;
+	return this->m_hopSize;
 }
 
 void set_hopSize(int hopSize){
 	this->m_hopSize = hopSize
 }
-
 
 // feature computation
 
