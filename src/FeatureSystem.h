@@ -29,7 +29,8 @@ class FeatureSystem {
 
 	public:
 		FeatureSystem();
-
+        
+        //void            initParams() : 
 		float*			get_signal();
 		void			set_signal(float* signal);
 		int				get_bufferSize();
