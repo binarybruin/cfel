@@ -18,12 +18,15 @@
 
 using namespace FeatureSystem;
 
+void initParams()
+{
 //these parameters will eventually come from the codec, or user definition.
 
 int bufferSize = 1024;
 int fs = 44100;
 int winSize = bufferSize;
 int hopSize = bufferSize/2;
+}
 
 // constructor
 FeatureSystem(); 
