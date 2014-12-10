@@ -39,6 +39,7 @@ class FeatureExtraction {
 		int				m_nRows;
 		int				m_nCols;
 
+
 	public:
 		FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize);
 
