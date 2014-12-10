@@ -1,8 +1,21 @@
-/* What do we want to include? */
+//
+// FeatureExtraction.cpp
+//
+// =================================================================== //
+//
+// Citygram feature class
+//
+// =================================================================== //
+//
+// Created by Michelle Auyoung, Jordan Juras, Jaeseong You
+// New York University 12/10/14
+// C Programming, Fall 2014
+//
+// =================================================================== //
+
 #include "FeatureStatistics.h"
 
 // constructor/deconstructor
-
 FeatureStatistics::FeatureStatistics(SAMPLE** feature, int nRows, int nCols, int sWinSize, int sHopSize){
 	set_feature(feature);
 	set_nRows(nRows);
