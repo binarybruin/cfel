@@ -22,10 +22,10 @@ void initParams()
 {
 //these parameters will eventually come from the codec, or user definition.
 
-int bufferSize = 1024;
-int fs = 44100;
-int winSize = bufferSize;
-int hopSize = bufferSize/2;
+	m_bufSize = 1024;
+	m_fs = 44100;
+	m_winSize = bufSize;
+	m_hopSize = bufSize/2;
 }
 
 // constructor
@@ -33,24 +33,24 @@ FeatureSystem();
 
 //getters and setters
 
-int get_bufferSize() {
-    return this->m_bufferSize;
+int get_bufSize() {
+    return m_bufSize;
 }
 
-void set_bufferSize(int bufferSize) { 
-    this->m_bufferSize = bufferSize;
+void set_bufSize(int bufSize) { 
+    m_bufSize = bufSize;
 }
 
 int get_fs() { 
-    return this->m_fs;
+    return m_fs;
 }
 
 void set_fs(int fs) {
-    this->m_fs = fs;
+    m_fs = fs;
 }
 
 int get_winSize() {
-    return this->m_winSize;
+    return m_winSize;
 }
 
 void set_winSize(int winSize) {

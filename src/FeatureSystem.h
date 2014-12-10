@@ -22,10 +22,12 @@
 class FeatureSystem {
 	private:
 		float*			m_signal;
-		int				m_bufferSize;
+		int				m_bufSize;
 		int				m_fs;
 		int				m_winSize;
 		int				m_hopSize;
+		int				m_nStatWinSize; 
+		int 			m_nStatHopSize;
 
 	public:
 		FeatureSystem();
@@ -33,8 +35,8 @@ class FeatureSystem {
         //void            initParams() : 
 		float*			get_signal();
 		void			set_signal(float* signal);
-		int				get_bufferSize();
-		void			set_bufferSize(int bufferSize);
+		int				get_bufSize();
+		void			set_bufSize(int bufSize);
 		int				get_fs();
 		void			set_fs(int fs);
 		int				get_winSize();

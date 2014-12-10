@@ -27,6 +27,9 @@ class FeatureController {
 		FeatureSystem		m_sysInfo;		// get system information
 
 		FeatureExtraction	m_feature;		// CHANGE TO ARRAY OF FEATURES?
+		//FeatureRMS	m_rms;
+		//FeatureZCR	m_zcr;
+		//FeatureMFCC	m_mfcc;
 
 		SAMPLE*				m_buffer;
 		SAMPLE*				m_reader;		// pointer to read buffer
