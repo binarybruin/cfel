@@ -3,7 +3,7 @@
 
 using namespace FeatureExtraction;
 
-// constructors
+// constructor/deconstructor
 
 FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize){
 	set_signal(signal);
