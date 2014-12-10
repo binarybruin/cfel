@@ -21,7 +21,7 @@
 
 #include "FeatureSystem.h"
 
-typedef float SAMPLE;
+typedef double SAMPLE;
 
 class FeatureExtraction {
 	private:
