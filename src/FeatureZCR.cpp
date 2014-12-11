@@ -1,4 +1,4 @@
-FeatureRMS:: void calculate_feature(){
+FeatureZCR:: void calculate_feature(){
 			
 			// set nCols and nRows (move to somewhere else?)
 			n_nCols = 1;
@@ -10,7 +10,7 @@ FeatureRMS:: void calculate_feature(){
 				feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
 			}
 			
-			// RMS calculation
+			// ZCR calculation
 			if (m_winSize <= 0){ 
 				printf("Check your winSize.\n");
 				EXIT(1);
@@ -20,21 +20,21 @@ FeatureRMS:: void calculate_feature(){
 				EXIT(1);
 			}
 			else{
-				SAMPLE sqrSum = 0.0
-				SAMPLE val;
-				for (i = 0; i < m_nCols; ++i){			
+				 for (i = 0; i < m_nCols; ++i){			
 					for (int j = 0; j < m_nRows; ++j){
 						for (int k = 0; k < m_winSize; ++k){
 							if (j*m_hopSize+k >= m_nCols){
 								val = 0;
 							}
 							else{
-								val = m_signal[j*m_hopSize+k];
 							}
-							sqrSum += val*val;
+
 						}
 					}
-					feature[j][i] = sqrt(sqrSum/(SAMPLE)m_winSize);
+					feature[j][i] = ???;
+				}
+				 
+				 
 				}
 			}
 			return feature; 
