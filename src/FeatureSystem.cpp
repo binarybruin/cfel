@@ -22,10 +22,10 @@ void initParams()
 {
 //these parameters will eventually come from the codec, or user definition.
 
-	m_bufSize = 1024;
+	m_bufSize = 512*100;
 	m_fs = 44100;
-	m_winSize = bufSize;
-	m_hopSize = bufSize/2;
+	m_winSize = 1024;
+	m_hopSize = 512;
 }
 
 // constructor
