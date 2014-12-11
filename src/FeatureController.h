@@ -34,6 +34,7 @@ class FeatureController {
 
 	public:
 		FeatureController(FeatureSystem systemObj);
+		~FeatureController();
 
 		FeatureExtraction	setFeature();	// create new Feature
 

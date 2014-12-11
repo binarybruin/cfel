@@ -41,6 +41,7 @@ class FeatureExtraction {
 
 	public:
 		FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize);
+		~FeatureExtraction();
 
 		SAMPLE*			get_signal();
 		void			set_signal(float* signal);

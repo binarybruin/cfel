@@ -29,6 +29,7 @@ class FeatureSystem {
 
 	public:
 		FeatureSystem();
+		~FeatureSystem();
 
 		float*			get_signal();
 		void			set_signal(float* signal);
