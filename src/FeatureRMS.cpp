@@ -1,3 +1,18 @@
+//
+// FeatureRMS.cpp
+//
+// =================================================================== //
+//
+// Citygram FeatureRMS class
+//
+// =================================================================== //
+//
+// Created by Michelle Auyoung, Jordan Juras, Jaeseong You
+// New York University 12/11/14
+// C Programming, Fall 2014
+//
+// =================================================================== //
+
 FeatureRMS:: void calculate_feature(){
 			
 			// set nCols and nRows (move to somewhere else?)
