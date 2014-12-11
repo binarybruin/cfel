@@ -1,4 +1,4 @@
-FeatureRMS:: void calculate_feature(){
+FeatureZCR:: void calculate_feature(){
 			
 			// set nCols and nRows (move to somewhere else?)
 			n_nCols = 1;
@@ -10,7 +10,7 @@ FeatureRMS:: void calculate_feature(){
 				m_feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
 			}
 			
-			// RMS calculation
+			// ZCR calculation
 			if (m_winSize <= 0){ 
 				printf("Check your winSize.\n");
 				EXIT(1);
@@ -20,21 +20,23 @@ FeatureRMS:: void calculate_feature(){
 				EXIT(1);
 			}
 			else{
-				SAMPLE sqrSum = 0.0
-				SAMPLE val;
+			int zcc; // zero crossing count
 				for (i = 0; i < m_nCols; ++i){			
 					for (int j = 0; j < m_nRows; ++j){
+						zcc = 0;
 						for (int k = 0; k < m_winSize; ++k){
-							if (j*m_hopSize+k >= m_nCols){
-								val = 0;
+							if (j*m_hopSize+k <= m_nCols){
+								// check the sign of two consecutive samples
+								if (m_signal[j*m_hopSize+k] < 0 && m_signal[j*m_hopSize+k+1] > 0){
+									++zcc;
+								}
+								if (m_signal[j*m_hopSize+k] > 0 && m_signal[j*m_hopSize+k+1] < 0){
+									++zcc;
+								}
 							}
-							else{
-								val = m_signal[j*m_hopSize+k];
-							}
-							sqrSum += val*val;
 						}
+						m_feature[j][i] = (SAMPLE)zcc/m_winSize;
 					}
-					m_feature[j][i] = sqrt(sqrSum/(SAMPLE)m_winSize);
-				}
+				}	 
 			}
 		}
