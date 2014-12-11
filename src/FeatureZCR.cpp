@@ -5,9 +5,9 @@ FeatureZCR:: void calculate_feature(){
 			m_nRows = ceil(m_bufSize/m_hopSize);
 			
 			// allocate memory for feature
-			feautre = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
+			m_feautre = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
 			for (int i = 0; i < m_nCols; ++i){
-				feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
+				m_feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
 			}
 			
 			// ZCR calculation
@@ -20,22 +20,23 @@ FeatureZCR:: void calculate_feature(){
 				EXIT(1);
 			}
 			else{
-				 for (i = 0; i < m_nCols; ++i){			
+			int zcc; // zero crossing count
+				for (i = 0; i < m_nCols; ++i){			
 					for (int j = 0; j < m_nRows; ++j){
+						zcc = 0;
 						for (int k = 0; k < m_winSize; ++k){
-							if (j*m_hopSize+k >= m_nCols){
-								val = 0;
+							if (j*m_hopSize+k <= m_nCols){
+								// check the sign of two consecutive samples
+								if (m_signal[j*m_hopSize+k] < 0 && m_signal[j*m_hopSize+k+1] > 0){
+									++zcc;
+								}
+								if (m_signal[j*m_hopSize+k] > 0 && m_signal[j*m_hopSize+k+1] < 0){
+									++zcc;
+								}
 							}
-							else{
-							}
-
 						}
+						m_feature[j][i] = (SAMPLE)zcc/m_winSize;
 					}
-					feature[j][i] = ???;
-				}
-				 
-				 
-				}
+				}	 
 			}
-			return feature; 
 		}

@@ -5,9 +5,9 @@ FeatureRMS:: void calculate_feature(){
 			m_nRows = ceil(m_bufSize/m_hopSize);
 			
 			// allocate memory for feature
-			feautre = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
+			m_feautre = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
 			for (int i = 0; i < m_nCols; ++i){
-				feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
+				m_feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
 			}
 			
 			// RMS calculation
@@ -34,8 +34,7 @@ FeatureRMS:: void calculate_feature(){
 							sqrSum += val*val;
 						}
 					}
-					feature[j][i] = sqrt(sqrSum/(SAMPLE)m_winSize);
+					m_feature[j][i] = sqrt(sqrSum/(SAMPLE)m_winSize);
 				}
 			}
-			return feature; 
 		}
