@@ -1,4 +1,18 @@
-/* What do we want to include? */
+//
+// FeatureExtraction.cpp
+//
+// =================================================================== //
+//
+// Citygram feature class
+//
+// =================================================================== //
+//
+// Created by Michelle Auyoung, Jordan Juras, Jaeseong You
+// New York University 12/11/14
+// C Programming, Fall 2014
+//
+// =================================================================== //
+
 #include "FeatureExtraction.h"
 
 using namespace FeatureExtraction;
@@ -12,6 +26,18 @@ FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize)
 	set_winSize(winSize);
 	set_hopSize(hopSize);
 } 
+
+~FeatureExtraction(){
+	if (m_signal != NULL){
+		free(m_signal);
+	}
+	
+	if (m_feature != NULL){
+		for (int i = 0; i < m_nCols; i++){
+			free(feature[i]);
+		}
+	}
+}
 
 // getters and setters
 

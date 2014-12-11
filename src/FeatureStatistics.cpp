@@ -1,5 +1,5 @@
 //
-// FeatureExtraction.cpp
+// FeatureStatistics.cpp
 //
 // =================================================================== //
 //
@@ -16,7 +16,7 @@
 #include "FeatureStatistics.h"
 
 // constructor/deconstructor
-FeatureStatistics::FeatureStatistics(SAMPLE** feature, int nRows, int nCols, int sWinSize, int sHopSize){
+FeatureStatistics(SAMPLE** feature, int nRows, int nCols, int sWinSize, int sHopSize){
 	set_nRows(nRows); // order matters
 	set_nCols(nCols);
 	set_feature(feature);
@@ -31,8 +31,7 @@ FeatureStatistics::FeatureStatistics(SAMPLE** feature, int nRows, int nCols, int
 	set_d2Features();
 }
 
-FeatureStatistics::~FeatureStatistics(){
-		
+~FeatureStatistics(){
 	// free feature
 	if (m_feature != NULL){
 		for (int i = 0; i < nCols; ++i){

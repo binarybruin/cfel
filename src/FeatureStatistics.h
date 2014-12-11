@@ -22,6 +22,8 @@
 #include "FeatureSystem.h"
 #include "FeatureExtraction.h"
 
+using namespace FeatureStatistics
+
 class FeatureStatistics { // put this class inside FeatureExtr class?
 	private:
 		// input parameters
