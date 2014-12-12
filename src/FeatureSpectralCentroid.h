@@ -13,11 +13,10 @@
 //
 // =================================================================== //
 
-class FeatureSpectralCentroid: public FeatureExtraction
+class FeatureSpectralCentroid: public FeatureExtractionSpectral
 {
-	private: 
-		SAMPLE** magSpec;
-		
 	public:
 		void calculate_feature();
 }
+
+
