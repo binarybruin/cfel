@@ -24,7 +24,7 @@ int get_nWins(){
 	return m_nWins;
 }
 
-void see_nWins(int nWins){
+void set_nWins(int nWins){
 	m_nWins = nWins;
 }
 
