@@ -14,16 +14,22 @@ enum WindowType {
 class WindowFunction {
 	private:
 		WindowType m_winType;
-		SAMPLE* m_window
-		
+		int m_winSize;
+		SAMPLE* m_window;
 		
 	public:
-		WindowFunction();
-		WindowFunction(int winType);
+		WindowFunction(int winSize);
+		WindowFunction(WindowType winType, int winSize);
 		~WindowFunction();
-				
-		int getWindowType();
+
+	    WindowType getWindowType();
 		void setWindowType(int winType);
+
+		int get_winSize();
+		void set_winSize(int winSize);
+
+		SAMPLE* getWindow();
+		void calculate_window();
 };
 
 

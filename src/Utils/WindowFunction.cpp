@@ -16,7 +16,7 @@ int WindowFunction::getWindowType() const {
 	return int(m_iWindowType);
 }
 
-vector<double> WindowFunction::generate(int nSamples) const {
+SAMPLE* WindowFunction::calculate_window {
 	// generate nSamples window function values
 	// for index values 0 .. nSamples - 1
 	int m = nSamples / 2;
