@@ -1,5 +1,3 @@
-#pragma once
-
 #include "FeatureExtraction.h"
 
 enum WindowType {
