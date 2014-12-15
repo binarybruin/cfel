@@ -19,8 +19,6 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "FeatureSystem.h"
-
 typedef float SAMPLE;
 
 class FeatureExtraction {
@@ -35,7 +33,7 @@ class FeatureExtraction {
 
 		// output parameters
 		//float*			m_featureTime;
-		float**			m_feature;
+		SAMPLE**		m_feature;
 		int				m_nRows;
 		int				m_nCols;
 

@@ -19,10 +19,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "FeatureSystem.h"
 #include "FeatureExtraction.h"
-
-using namespace FeatureStatistics
 
 class FeatureStatistics { // put this class inside FeatureExtr class?
 	private:
@@ -95,3 +92,5 @@ class FeatureStatistics { // put this class inside FeatureExtr class?
 		SAMPLE** 		calculate_var2std(SAMPLE** var); // general var to std converters
 		SAMPLE** 		calculate_delta(SAMPLE** feature); // generla delta calculator
 };
+
+#endif
