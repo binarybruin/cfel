@@ -19,17 +19,16 @@ class WindowFunction {
 		
 	public:
 		WindowFunction(int winSize);
-		WindowFunction(WindowType winType, int winSize);
+		WindowFunction(int winSize, WindowType winType);
 		~WindowFunction();
-
-	    WindowType getWindowType();
-		void setWindowType(int winType);
-
-		int get_winSize();
+		
+		void set_winType(int winType);
+	    WindowType get_winType();
+				
 		void set_winSize(int winSize);
-
+		int get_winSize();
+		
 		SAMPLE* getWindow();
-		SAMPLE* getWindow(int winType);
 		void calculate_window();
 };
 
