@@ -4,28 +4,39 @@
 
 using namespace std;
 
-WindowFunction::WindowFunction(int winType) {
-	m_iWindowType = WindowType(iWindowType);
+WindowFunction::WindowFunction(int winSize) {
+	m_winType = 2; // hanning window by default
+	m_win
+	m_window = calculate_window();
+	
 }
 
-void WindowFunction::setWindowType(int iWindowType) {
-	m_iWindowType = WindowType(iWindowType);
+WindowFunction::WindowFunction(WindowType winType, int winType) {
+	if (wintType > NUM_WINDOW_TYPES
+	m_winType = winType;
+	
+	
+}
+
+WindowFunction::WindowFunction() {
+
+}
+
+
+void WindowFunction::setWindowType(int winType) {
+	m_winType = WindowType(winType);
 }
 
 int WindowFunction::getWindowType() const {
-	return int(m_iWindowType);
+	return int(m_winType);
 }
 
-SAMPLE* WindowFunction::calculate_window {
-	// generate nSamples window function values
-	// for index values 0 .. nSamples - 1
-	int m = nSamples / 2;
-	double r;
-	vector<double> w(nSamples);
+SAMPLE* WindowFunction::calculate_window() {
+	int m = m_winSize / 2;
 
-	switch (m_iWindowType) {
+	switch (m_winType) {
 	case WINDOW_TYPE_BARTLETT: // Bartlett (triangular) window
-			for (int n = 0; n < nSamples; n++)
+			for (int n = 0; n < m_winSize; n++)
 					w[n] = 1.0 - fabs(n - m) / m;
 			break;
 
@@ -48,8 +59,7 @@ SAMPLE* WindowFunction::calculate_window {
 			break;
 
 	default: // Rectangular window function
-		// TODO: Actually we should throw exception here
-			for (int n = 0; n < nSamples; n++)
+			for (int n = 0; n < m_winSize; n++)
 					w[n] = 1.0;
 			break;
 	}

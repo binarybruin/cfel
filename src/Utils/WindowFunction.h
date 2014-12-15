@@ -29,6 +29,7 @@ class WindowFunction {
 		void set_winSize(int winSize);
 
 		SAMPLE* getWindow();
+		SAMPLE* getWindow(int winType);
 		void calculate_window();
 };
 
