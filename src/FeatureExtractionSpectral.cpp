@@ -40,6 +40,11 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 		magSpec[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
 	}
 
+	// get window
+	WindowFunction windowObj = new WindowFunction(m_winSize);
+	window = windowObj.get_window();
+	
+	
 	// get the magnitude spectrum of the complex fft result
 	for (int i = 0; i < nNumSamples/2+1; i++)
 		magSpec[i] = abs(fftOut[i]);

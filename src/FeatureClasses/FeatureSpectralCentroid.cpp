@@ -17,9 +17,13 @@ void calculate_feature(){ // compute Spectral centroid
 
 	double fSum = 0.0;
 	double fWeightedSum = 0.0;
+	double window[m_winSize];
 	
 	
-	for (int i = 0; i < nSize; i++) { // column..frequency axis
+	
+	
+	
+	for (int i = 0; i < m_winSize/2; i++) { // column..frequency axis
 		fWeightedSum += i*fBinSize*m_magSpec[i];
 		fSum += pMagSpec[i];
 	}
