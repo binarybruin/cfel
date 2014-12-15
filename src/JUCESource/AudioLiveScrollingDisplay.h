@@ -68,7 +68,8 @@ public:
 
             for (int chan = 0; chan < numInputChannels; ++chan)
                 if (inputChannelData[chan] != nullptr)
-                    inputSample += std::abs (inputChannelData[chan][i]);  // find the sum of all the channels
+                    inputSample += std::abs (inputChannelData[chan][i]/2);  // find the sum of all the channels
+                    
 
             pushSample (10.0f * inputSample); // boost the level to make it more easily visible.
         }

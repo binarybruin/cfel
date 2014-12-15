@@ -31,7 +31,8 @@ public:
     void audioDeviceIOCallback (const float** inputChannelData, int numInputChannels,
                                 float** outputChannelData, int numOutputChannels,
                                 int numSamples) override;
-    
+bool getflag();
+
 private:
     void clear();
     void paint (Graphics& g) override;
@@ -47,11 +48,12 @@ private:
 
     TextEditor textBox;
     float samples[1024];
-    int nextSample, subSample, itermod, iteration, index, numChannels;
+    int nextSample, subSample, counterSave, counterBuf, iteration, bufSelect, index, numChannels;
     float accumulator;
 
-    float saveBuf[2 * 100 * 1024]; //how big: 100 times writing 1024 samples * numInputChannels(this is not variable yet)
-
+    float saveBuf1[2 * 100 * 1024]; //how big: 100 times writing 1024 samples * numInputChannels(this is not variable yet)
+    float saveBuf2[2 * 100 * 1024];
+    bool flag; 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioAnalyzer);
 };

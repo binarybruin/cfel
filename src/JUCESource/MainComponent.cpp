@@ -131,7 +131,13 @@ void MainComponent::func()
 MainComponent::MainComponent() //will need to call the system class data
 {
     
-    //func();           this will be the system class constructor
+    //func();           this is where to call the feature extraction on alternating buffers
+    
+    if(analyzer.getflag() == 0){
+        std::cout << "FLAG CHECK !!!!" << std::endl;
+    }
+    
+    
     setOpaque (true);
     
     // create a device manager and connect it to the modules
@@ -142,8 +148,13 @@ MainComponent::MainComponent() //will need to call the system class data
     addAndMakeVisible (liveAudioScroller);
     deviceManager->addAudioCallback (&liveAudioScroller);
     
+    // TRY: liveAudioScroller2)
+    addAndMakeVisible (liveAudioScroller2);
+    deviceManager->addAudioCallback(&liveAudioScroller2);
+    
     addAndMakeVisible (analyzer);
     deviceManager->addAudioCallback (&analyzer);
+    
     
     // UI: quitButton
     addAndMakeVisible(quitButton = new TextButton(String::empty));
@@ -154,10 +165,10 @@ MainComponent::MainComponent() //will need to call the system class data
     // set size of the window
     setSize(600,600);
     
-    bThread[0] = new BeaconThread("Manhatten");
-    bThread[1] = new BeaconThread("Queens");
-    bThread[2] = new BeaconThread("Brooklyn");
-    bThread[3] = new BeaconThread("Bronx");
+    bThread[0] = new BeaconThread("Thread1");
+    bThread[1] = new BeaconThread("Thread2");
+    bThread[2] = new BeaconThread("Thread3");
+    bThread[3] = new BeaconThread("Thread4");
     
     for (int i=0; i<4; i++)
         bThread[i]->startThread();
@@ -170,6 +181,9 @@ MainComponent::~MainComponent()
     quitButton = nullptr;
     deviceManager->removeAudioCallback(&liveAudioScroller);
     deviceManager->removeAudioCallback(&analyzer);
+    
+    // TRY:liveAudioScroller2
+    deviceManager->removeAudioCallback(&liveAudioScroller2);
 }
 
 void MainComponent::fillBrushedAluminiumBackground (Graphics& g)
@@ -194,6 +208,9 @@ void MainComponent::resized()
     liveAudioScroller.setBounds (area.removeFromTop (80).reduced (8));
     analyzer.setBounds (area.removeFromTop (160).reduced (8));
     quitButton->setBounds(getWidth()-176, getHeight()-60, 120, 32);
+    
+    //TRY: AudioScroller2
+    liveAudioScroller2.setBounds (area.removeFromTop (80).reduced(8));
 
 }
 

@@ -15,6 +15,7 @@
 #include "AudioLiveScrollingDisplay.h"
 #include "AudioAnalyzer.h"
 #include "BeaconThread.h"
+//#include "FeatureController.h"
 
 
 
@@ -38,6 +39,9 @@ private:
     AudioDeviceManager *deviceManager;
     LiveScrollingAudioDisplay liveAudioScroller;
     AudioAnalyzer analyzer;
+    
+    //TRY: liveAudioScroller2;
+    LiveScrollingAudioDisplay liveAudioScroller2;
     
     BeaconThread *bThread[4];
     

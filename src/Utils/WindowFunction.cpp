@@ -4,56 +4,76 @@
 
 using namespace std;
 
-WindowFunction::WindowFunction(int winType) {
-	m_iWindowType = WindowType(iWindowType);
+
+// Constructors/destructors
+WindowFunction::WindowFunction(int winSize) {
+	m_winType = 2; // hanning window by default
+	m_winSize = winSize;
+	void calculate_window();
 }
 
-void WindowFunction::setWindowType(int iWindowType) {
-	m_iWindowType = WindowType(iWindowType);
+WindowFunction::WindowFunction(int winType, WindowType winType) {
+	m_winType = winType;
+	m_winSize = winSize;
+	void calculate_window();	
 }
 
-int WindowFunction::getWindowType() const {
-	return int(m_iWindowType);
+WindowFunction::~WindowFunction() {
+	free(m_window);
 }
 
-SAMPLE* WindowFunction::calculate_window {
-	// generate nSamples window function values
-	// for index values 0 .. nSamples - 1
-	int m = nSamples / 2;
-	double r;
-	vector<double> w(nSamples);
+// getters and setters
 
-	switch (m_iWindowType) {
+void WindowFunction::set_winType(int winType) {
+	m_winType = WindowType(winType);
+}
+
+int WindowFunction::get_winType() const {
+	return int(m_winType);
+}
+
+void WindowFunction::set_winSize(int winSize){
+	m_winSize = winSize;
+}
+
+int WindowFunction::get_winSize(){
+	return m_winSize;
+}
+
+SAMPLE* WindowFunction::get_window(){
+	return m_window;
+}
+
+void WindowFunction::calculate_window() {
+	int m = m_winSize / 2;
+
+	switch (m_winType) {
 	case WINDOW_TYPE_BARTLETT: // Bartlett (triangular) window
-			for (int n = 0; n < nSamples; n++)
-					w[n] = 1.0 - fabs(n - m) / m;
+			for (int n = 0; n < m_winSize; n++)
+					m_window[n] = 1.0 - fabs(n - m) / m;
 			break;
 
 	case WINDOW_TYPE_HANNING: // Hann window
 			r = M_PI / (m + 1);
 			for (int n = -m; n < m; n++)
-					w[m + n] = 0.5 + 0.5 * cos(n * r);
+					m_window[m + n] = 0.5 + 0.5 * cos(n * r);
 			break;
 
 	case WINDOW_TYPE_HAMMING: // Hamming window
 			r = M_PI / m;
 			for (int n = -m; n < m; n++)
-					w[m + n] = 0.54 + 0.46 * cos(n * r);
+					m_window[m + n] = 0.54 + 0.46 * cos(n * r);
 			break;
 
 	case WINDOW_TYPE_BLACKMAN: // Blackman window
 			r = M_PI / m;
 			for (int n = -m; n < m; n++)
-					w[m + n] = 0.42 + 0.5 * cos(n * r) + 0.08 * cos(2 * n * r);
+					m_window[m + n] = 0.42 + 0.5 * cos(n * r) + 0.08 * cos(2 * n * r);
 			break;
 
 	default: // Rectangular window function
-		// TODO: Actually we should throw exception here
-			for (int n = 0; n < nSamples; n++)
-					w[n] = 1.0;
+			for (int n = 0; n < m_winSize; n++)
+					m_window[n] = 1.0;
 			break;
 	}
-
-	return w;
-}
 }
