@@ -20,28 +20,30 @@
 #include <math.h>
 
 #include "FeatureExtraction.h"
-#include "FeatureSystem.h"
 
 class FeatureController {
 	private:
-		FeatureSystem		m_sysInfo;		// get system information
-
-		FeatureExtraction	m_feature;		// CHANGE TO ARRAY OF FEATURES?
-
+		// output parameters
+		FeatureRMS			m_feature;		// ***CHANGE TO ARRAY OF FEATURES?
+		FeatureStatistics	featureStatObject
+		
+		// input parameters from JUCE
 		SAMPLE*				m_buffer;
-		SAMPLE*				m_reader;		// pointer to read buffer
-		SAMPLE*				m_writer;		// pointer to write buffer
-
+		int					m_bufSize;
+		int					m_fs;
+		int					m_winSize;
+		int					m_hopSize;
+	
 	public:
-		FeatureController(FeatureSystem systemObj);
+		FeatureController(SAMPLE* buffer, int bufSize, int fs, int winSize, int hopSize);
 		~FeatureController();
 
-		FeatureExtraction	setFeature();	// create new Feature
-
-		SAMPLE*				get_inputAudio();
-		void				write_audio(float* buffer, float* readPointer, float* writePointer);
-
-		void				visualize(float* buffer);
+		void setFeature();	// create new Feature
+		SAMPLE** getFeature();
+		void exportFeatureData(); // xml
+		
+		
+		
 };
 
 #endif
