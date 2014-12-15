@@ -13,7 +13,7 @@
 //
 // =================================================================== //
 
-FeatureRMS:: void calculate_feature(){
+void FeatureRMS::calculate_feature(){
 			
 			// set nCols and nRows (move to somewhere else?)
 			n_nCols = 1;

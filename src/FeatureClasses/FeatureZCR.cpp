@@ -1,4 +1,4 @@
-FeatureZCR:: void calculate_feature(){
+void FeatureZCR::calculate_feature(){
 			
 			// set nCols and nRows (move to somewhere else?)
 			n_nCols = 1;

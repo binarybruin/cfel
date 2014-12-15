@@ -16,7 +16,7 @@
 #include "FeatureStatistics.h"
 
 // constructor/deconstructor
-FeatureStatistics(SAMPLE** feature, int nRows, int nCols, int sWinSize, int sHopSize){
+FeatureStatistics::FeatureStatistics(SAMPLE** feature, int nRows, int nCols, int sWinSize, int sHopSize){
 	set_nRows(nRows); // order matters
 	set_nCols(nCols);
 	set_feature(feature);
@@ -31,7 +31,7 @@ FeatureStatistics(SAMPLE** feature, int nRows, int nCols, int sWinSize, int sHop
 	set_d2Features();
 }
 
-~FeatureStatistics(){
+FeatureStatistics::~FeatureStatistics(){
 	// free feature
 	if (m_feature != NULL){
 		for (int i = 0; i < nCols; ++i){
@@ -122,11 +122,11 @@ FeatureStatistics(SAMPLE** feature, int nRows, int nCols, int sWinSize, int sHop
 }
 
 
-SAMPLE** get_feature(){
+SAMPLE** FeatureStatistics::get_feature(){
 	return m_feature;
 }
 
-void set_feature(SAMPLE** feature){
+void FeatureStatistics::set_feature(SAMPLE** feature){
 	// input check
 	if (feature == NULL){
 		EXIT(1);
@@ -144,51 +144,51 @@ void set_feature(SAMPLE** feature){
 	m_feature = feature;
 }
 
-int get_nRows(){
+int FeatureStatistics::get_nRows(){
 	return m_nRows
 }
 
-void set_nRows(int nRows){
+void FeatureStatistics::set_nRows(int nRows){
 	m_nRows = nRows;
 }
 
-int get_nCols(){
+int FeatureStatistics::get_nCols(){
 	return m_nCols;
 }
 
-void set_nCols(int nCols){
+void FeatureStatistics::set_nCols(int nCols){
 	m_nCols = nCols;
 }
 
-int get_nStatRows(){
+int FeatureStatistics::get_nStatRows(){
 	return m_nStatRows;
 }
 
-void set_nStatRows(){
+void FeatureStatistics::set_nStatRows(){
 	m_nStatRows =  ceil(m_nRows/m_nHopSize);
 }
 
-int get_nStatCols(){
+int FeatureStatistics::get_nStatCols(){
 	return m_nStatCols;
 }
 
-void set_nStatRows(){
+void FeatureStatistics::set_nStatRows(){
 	m_nStatCols = m_nCols;
 }
 
-int get_sWinSize(){
+int FeatureStatistics::get_sWinSize(){
 	return m_sWinSize;
 }
 
-void set_sWinSize(int sWinSize){
+void FeatureStatistics::set_sWinSize(int sWinSize){
 	m_sWinSize = sWinSize;
 }
 
-int get_sHopSize(){
+int FeatureStatistics::get_sHopSize(){
 	return m_sHopSize;
 }
 
-void set_sHopSize(int sHopSize){
+void FeatureStatistics::set_sHopSize(int sHopSize){
 	m_sHopSize = sHopSize;
 }
 
@@ -198,19 +198,19 @@ void set_sHopSize(int sHopSize){
 
 
 
-SAMPLE** get_mean(){
+SAMPLE** FeatureStatistics::get_mean(){
 	return m_mean;
 }
 
-SAMPLE** get_std(){
+SAMPLE** FeatureStatistics::get_std(){
 	return m_std;
 }
 
-SAMPLE** get_var(){
+SAMPLE** FeatureStatistics::get_var(){
 	return m_var;
 }
 
-void set_features(){
+void FeatureStatistics::set_features(){
 	// memory allocation
 	m_mean = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
 	for (int i = 0; i < m_nStatCols; ++i){
@@ -234,23 +234,23 @@ void set_features(){
 
 
 
-SAMPLE** get_d1Feature(){
+SAMPLE** FeatureStatistics::get_d1Feature(){
 	return m_d1Feature;
 }
 
-SAMPLE** get_d1Mean(){
+SAMPLE** FeatureStatistics::get_d1Mean(){
 	return m_d1Mean;
 }
 
-SAMPLE** get_d1Std(){
+SAMPLE** FeatureStatistics::get_d1Std(){
 	return m_d1Std;
 }
 
-SAMPLE** get_d1Var(){
+SAMPLE** FeatureStatistics::get_d1Var(){
 	return m_d1Var;
 }
 
-void set_d1Features(){
+void FeatureStatistics::set_d1Features(){
 	// memory allocation
 	m_d1Feature = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
 	for (int i = 0; i < m_nCols; ++i){
@@ -276,23 +276,23 @@ void set_d1Features(){
 	m_d1Std = calculate_var2std(m_d1Var);
 }
 
-SAMPLE** get_d2Feature(){
+SAMPLE** FeatureStatistics::get_d2Feature(){
 	return m_d2Feature;
 }
 
-SAMPLE** get_d2Mean(){
+SAMPLE** FeatureStatistics::get_d2Mean(){
 	return m_d2Mean; 
 }
 
-SAMPLE** get_d2Std(){
+SAMPLE** FeatureStatistics::get_d2Std(){
 	return m_d2Std;
 }
 
-SAMPLE** get_d2Var(){
+SAMPLE** FeatureStatistics::get_d2Var(){
 	return m_d2Var;
 }
 
-void set_d2Features(){
+void FeatureStatistics::set_d2Features(){
 	// memory allocation
 	m_d2Feature = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
 	for (int i = 0; i < m_nCols; ++i){
@@ -319,7 +319,7 @@ void set_d2Features(){
 }
 
 
-SAMPLE** calculate_mean(SAMPLE** feature){
+SAMPLE** FeatureStatistics::calculate_mean(SAMPLE** feature){
 	// input check
 	if (feature == NULL){
 		printf("input is NULL");
@@ -354,7 +354,7 @@ SAMPLE** calculate_mean(SAMPLE** feature){
 }
 
 
-SAMPLE** calculate_var(SAMPLE** feature, SAMPLE** mean){
+SAMPLE** FeatureStatistics::calculate_var(SAMPLE** feature, SAMPLE** mean){
 	// input check
 	if (feature == NULL | mean == NULL){
 		printf("input is NULL");
@@ -391,7 +391,7 @@ SAMPLE** calculate_var(SAMPLE** feature, SAMPLE** mean){
 }
 
 
-SAMPLE** calculate_var2std(SAMPLE** var){
+SAMPLE** FeatureStatistics::calculate_var2std(SAMPLE** var){
 	// input check
 	if (var == NULL){
 		printf("input is NULL");
@@ -414,7 +414,7 @@ SAMPLE** calculate_var2std(SAMPLE** var){
 }
 
 
-SAMPLE** calculate_delta(SAMPLE** feature){
+SAMPLE** FeatureStatistics::calculate_delta(SAMPLE** feature){
 	// input check
 	if (feature == NULL){
 		printf("input is NULL");

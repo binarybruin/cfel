@@ -13,62 +13,28 @@
 //
 // =================================================================== //
 
-FeatureExtractionSpectral(){
+FeatureExtractionSpectral::FeatureExtractionSpectral(){
 }
 
-~FeatureExtractionSpectral(){
-}
-
-
-int get_nWins(){
-	return m_nWins;
-}
-
-void set_nWins(int nWins){
-	m_nWins = nWins;
+FeatureExtractionSpectral::~FeatureExtractionSpectral(){
 }
 
 
-int get_winType(){
-	return m_winType;
-	/* 	1: Hann 
-		2: Hamming 
-		3: Blackman
-		4: Tukey
-		5: Kaiser
-	*/
+int FeatureExtractionSpectral::get_winType(){
+	return m_winType; // refer to WindowFunction.h for detailed info on Windows
 }
-void set_winType(int winType){
-	if (winType > m_nWins){
-		printf("Check your input");
-		EXIT(1);
-	}
+
+void FeatureExtractionSpectral::set_winType(int winType){
 	m_winType = winType;
 }
 		
-SAMPLE** get_window(){
-	return m_window;
+SAMPLE** FeatureExtractionSpectral::get_magSpec(){
+	return m_magSpec;
 }
+		
+void FeatureExtractionSpectral::calculate_magSpec(){
 
-void set_window(){
-	/* 	1: Hann 
-		2: Hamming 
-		3: Blackman
-		4: Tukey
-		5: Kaiser
-	*/
-	m_window = (SAMPLE**)malloc(sizeof(SAMPLE)*); // rows and columns...?
-	for (int i = 0; i < numWin; ++i){
-	}
-}
-
-void calculate_FFT(){
-}
-
-
-void calculate_magSpec(){
-
-	magSpec = (SAMPLE**)malloc(nWinSize*sizeof(SAMPLE*));
+	m_magSpec = (SAMPLE**)malloc(nWinSize*sizeof(SAMPLE*));
 	
 	for (int i = 0; i < nWinSize; ++i){
 		magSpec[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
@@ -78,6 +44,5 @@ void calculate_magSpec(){
 	for (int i = 0; i < nNumSamples/2+1; i++)
 		magSpec[i] = abs(fftOut[i]);
 
-	return magSpec;
 }
 
