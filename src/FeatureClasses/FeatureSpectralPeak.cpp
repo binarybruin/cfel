@@ -1,5 +1,5 @@
 //
-// FeatureSpectralFlux.cpp
+// FeatureSpectralPeak.cpp
 //
 // =================================================================== //
 //
@@ -20,11 +20,14 @@
 
 using namespace FeatureExtraction::Utils;
 
-void FeatureSpectralFlux::calculate_feature(){
+void FeatureSpectralPeak::calculate_feature(){
+
+	
 
 	SAMPLE* signal = this->get_signal();
-	int sig_length = this->get_bufSize();
+	int bufSize = this->get_bufSize();
 	int winSize = this->get_winSize();
+	int hopSize = this->get_hopSize();
 	
 	// set and get nCols and nRows
 	set_nCols(1);
@@ -32,38 +35,18 @@ void FeatureSpectralFlux::calculate_feature(){
 	nCols = get_nCols();
 	nRows = get_nRows();
 	
-	//memory allocation for feature
+	// allocate memory for feature
 	m_feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
 	for (int i = 0; i < nCols; ++i){
 		m_feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
 	}
-	
-	// check input spectrum is same size as last spectrum
-	static vector<SAMPLE> past;
-
-	if (past.size() != sig_length) {
-		if (past.size() == 0) {
-			past.resize(sig_length, 0.0);
-		}
-		else {
-			// TODO: Should throw error here
-			return;
-		}
-	}
 
 	// get magnitude spectrum
-	FeatureExtractionSpectral *spectral = new FeatureExtractionSpectral();		// TODO: BUT WHERE DOES THIS GET INITIALIZED? --> in constructor
+	FeatureExtractionSpectral *spectral = new FeatureExtractionSpectral();
 	SAMPLE** pMagSpec = spectral->get_magSpec();
 
-	// calculate spectral flux of magnitude spectrum
-	vector<SAMPLE> specFlux(nRows);
-
 	for (int i = 0; i < nRows; i++)
-		specFlux[i] = fabs(pMagSpec[i] - past[i]);		// TODO: WHERE IS PAST INITIALIZED?
+		// TODO: get the frequency bin size and multiply with the INDEX of the frequeny bin of the largest value
+		m_feature[i] = std::max_element("entireRow")*freqBinSize; // TODO: need to be fixed
 
-	past.assign(pMagSpec, pMagSpec + sig_length);
-
-	//return EuclidDist::euclidDist(&specFlux[0], nSize);
-
-	this->set_signal(EuclidDist::euclidDist(&specFlux[0], sig_length));		// TODO: SAMPLE INCOMPATIBLE WITH TYPE FLOAT?
 }
