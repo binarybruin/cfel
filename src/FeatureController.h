@@ -42,9 +42,7 @@ class FeatureController {
 		void setFeature(SAMPLE* buffer, int bufSize, int fs, int winSize, int hopSize);	// create new Feature
 		SAMPLE** getFeature();
 		void exportFeatureData(); // xml
-		
-		
-		
+			
 };
 
 #endif

@@ -44,7 +44,7 @@ void FeatureZCR::calculate_feature(){
 				for (int j = 0; j < nRows; ++j){
 					zcc = 0;
 					for (int k = 0; k < winSize; ++k){
-						if (j*hopSize+k <= nCols){ // conceptually zero-padding
+						if (j*hopSize+k < bufSize-1){ // conceptually zero-padding
 							// check the sign of two consecutive samples
 							if (buffer[j*hopSize+k] < 0 && buffer[j*hopSize+k+1] > 0){
 								++zcc;
@@ -57,5 +57,4 @@ void FeatureZCR::calculate_feature(){
 					m_feature[j][i] = (SAMPLE)zcc/winSize;
 				}
 			}	 
-			
 		}
