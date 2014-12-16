@@ -7,7 +7,7 @@ namespace FeatureExtraction {
 namespace Utils {
 
 // compute the FFT of x, assuming its length is a power of 2
-vector<complex<double> > FFT::fft(vector<complex<double> > x) {
+vector<complex<SAMPLE> > FFT::fft(vector<complex<SAMPLE> > x) {
 	int N = x.size();
 
 	// base case
@@ -15,28 +15,28 @@ vector<complex<double> > FFT::fft(vector<complex<double> > x) {
 
 	// radix 2 Cooley-Tukey FFT
 	// TODO: Must throw
-	if (N % 2 != 0) { return vector<complex<double> >(); }
+	if (N % 2 != 0) { return vector<complex<SAMPLE> >(); }
 
 	// fft of even terms
-	vector<complex<double> > even(N/2);
+	vector<complex<SAMPLE> > even(N / 2);
 	for (int k = 0; k < N/2; k++) {
 		even[k] = x[2*k];
 	}
-	vector<complex<double> > q = fft(even);
+	vector<complex<SAMPLE> > q = fft(even);
 
 	// fft of odd terms
-	vector<complex<double> > odd = even;  // reuse the array
+	vector<complex<SAMPLE> > odd = even;  // reuse the array
 	for (int k = 0; k < N/2; k++) {
 		odd[k] = x[2*k + 1];
 	}
-	vector<complex<double> > r = fft(odd);
+	vector<complex<SAMPLE> > r = fft(odd);
 
 	// combine
-	vector<complex<double> > y(N);
+	vector<complex<SAMPLE> > y(N);
 	for (int k = 0; k < N/2; k++) {
-		double kth = -2.0 * (double)k * M_PI / (double)N;
-		complex<double> wk = complex<double>(cos(kth), sin(kth));
-		y[k]       = q[k] + wk*r[k];
+		SAMPLE kth = -2.0 * (SAMPLE)k * M_PI / (SAMPLE)N;
+		complex<SAMPLE> wk = complex<SAMPLE>(cos(kth), sin(kth));
+		y[k]       = q[k] + wk*r[k];1
 		y[k + N/2] = q[k] - wk*r[k];
 	}
 	return y;
