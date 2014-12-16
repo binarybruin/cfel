@@ -20,7 +20,7 @@ void FeatureRMS::calculate_feature(){
 			m_nRows = ceil(m_bufSize/m_hopSize);
 			
 			// allocate memory for feature
-			m_feautre = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
+			m_feature = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
 			for (int i = 0; i < m_nCols; ++i){
 				m_feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
 			}
@@ -28,14 +28,14 @@ void FeatureRMS::calculate_feature(){
 			// RMS calculation
 			if (m_winSize <= 0){ 
 				printf("Check your winSize.\n");
-				EXIT(1);
+				exit(1);
 			}
 			else if (m_winSize > m_bufSize){
 				printf("winSize exceeds bufSize.\n");
-				EXIT(1);
+				exit(1);
 			}
 			else{
-				SAMPLE sqrSum = 0.0
+				SAMPLE sqrSum = 0.0;
 				SAMPLE val;
 				for (i = 0; i < m_nCols; ++i){			
 					for (int j = 0; j < m_nRows; ++j){
