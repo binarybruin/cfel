@@ -1,0 +1,17 @@
+#include "RemoveDC.h"
+#include <math.h>
+
+namespace FeatureExtraction{
+namespace Utils{
+
+RemoveDC::calculate_removeDC(SAMPLE* buffer){
+	double fSUm = 0.0;
+	for (int i = 0; i < bufSize; ++i)
+		fSum += buffer[i];
+
+}
+
+
+
+}
+}
