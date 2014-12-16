@@ -15,10 +15,32 @@
 
 #include "FeatureExtractionSpectral.h"
 
-FeatureExtractionSpectral::FeatureExtractionSpectral(){
+FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize){
+	set_signal(signal);
+	set_bufSize(bufSize);
+	set_fs(fs);
+	set_winSize(winSize);
+	set_hopSize(hopSize);
+	
+	calculate_magSpec();
 }
 
 FeatureExtractionSpectral::~FeatureExtractionSpectral(){
+	if (m_signal != NULL){
+		free(m_signal);
+	}
+	
+	if (m_feature != NULL){
+		for (int i = 0; i < m_nCols; ++i){
+			free(m_feature[i]);
+		}
+	}
+	
+	if (m_magSpec != NULL){
+		for (int i = 0; i < m_nWinSize / 2 + 1; ++i){
+			free(m_magSpec[i]);
+		}
+	}
 }
 
 
@@ -56,14 +78,17 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 	// get the magnitude spectrum
 	SAMPLE* fftOut; 
 	for (i = 0; i < nRows; ++i){
+	
 		// hopping (happens in buffer) and windowing
 		for (int j = 0; j < winSize; ++j){
 			winSig[j] = buffer[i*hopSize+j]*window[j];
 			
 		}
+		
 		fftout = FFT(winSig);
 		
-		for (j = 0; j < winSize/2+1; ++j){
+		// put the fftout to m_magSpec
+		for (j = 0; j < winSize / 2 + 1; ++j){
 			m_magSpec[i][j] = (SAMPLE)abs(fftOut[i]);
 		}
 	}

@@ -1,42 +1,61 @@
+//
+// FeatureSpectralFlux.cpp
+//
+// =================================================================== //
+//
+// Citygram feature class
+//
+// =================================================================== //
+//
+// Created by Michelle Auyoung, Jordan Juras, Jaeseong You
+// New York University 12/15/14
+// C Programming, Fall 2014
+//
+// =================================================================== //
+
+#include "FeatureZCR.h"
+
+#include <iostream>
+#include <fstream>
+
+using namespace FeatureExtraction::Utils;
+
 void FeatureZCR::calculate_feature(){
-			
+			int bufSize = this->get_bufSize();
+			int hopSize = this->get_hopSize();
+			int winSize = this->get_winSize();
+			SAMPLE* buffer = this->get_signal();
+
 			// set nCols and nRows (move to somewhere else?)
-			n_nCols = 1;
-			m_nRows = ceil(m_bufSize/m_hopSize);
+			set_nCols(1);
+			set_nRows(ceil(bufSize/hopSize));
+			int nCols = get_nCols();
+			int nRows = get_nRows();
 			
 			// allocate memory for feature
-			m_feautre = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
-			for (int i = 0; i < m_nCols; ++i){
-				m_feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
+			m_feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
+			for (int i = 0; i < nCols; ++i){
+				m_feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
 			}
 			
 			// ZCR calculation
-			if (m_winSize <= 0){ 
-				printf("Check your winSize.\n");
-				EXIT(1);
-			}
-			else if (m_winSize > m_bufSize){
-				printf("winSize exceeds bufSize.\n");
-				EXIT(1);
-			}
-			else{
 			int zcc; // zero crossing count
-				for (i = 0; i < m_nCols; ++i){			
-					for (int j = 0; j < m_nRows; ++j){
-						zcc = 0;
-						for (int k = 0; k < m_winSize; ++k){
-							if (j*m_hopSize+k <= m_nCols){
-								// check the sign of two consecutive samples
-								if (m_signal[j*m_hopSize+k] < 0 && m_signal[j*m_hopSize+k+1] > 0){
-									++zcc;
-								}
-								if (m_signal[j*m_hopSize+k] > 0 && m_signal[j*m_hopSize+k+1] < 0){
-									++zcc;
-								}
+			for (i = 0; i < nCols; ++i){			
+				for (int j = 0; j < nRows; ++j){
+					zcc = 0;
+					for (int k = 0; k < winSize; ++k){
+						if (j*hopSize+k <= nCols){ // conceptually zero-padding
+							// check the sign of two consecutive samples
+							if (buffer[j*hopSize+k] < 0 && buffer[j*hopSize+k+1] > 0){
+								++zcc;
+							}
+							if (buffer[j*hopSize+k] > 0 && buffer[j*hopSize+k+1] < 0){
+								++zcc;
 							}
 						}
-						m_feature[j][i] = (SAMPLE)zcc/m_winSize;
 					}
-				}	 
-			}
+					m_feature[j][i] = (SAMPLE)zcc/winSize;
+				}
+			}	 
+			
 		}
