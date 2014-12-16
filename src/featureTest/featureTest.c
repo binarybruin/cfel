@@ -85,7 +85,7 @@ float *m_signal = buffer;
 			// RMS calculation
 			if (m_winSize <= 0){ 
 				printf("Check your winSize.\n");
-				exit(1);                            // CORRECTION: must be lowercase
+				exit(1);                            // CORRECTION: must be lowercase in C, haven't tested C++...
 				
 			}
 			else if (m_winSize > m_bufSize){
