@@ -7,12 +7,12 @@ using namespace std;
 
 // Constructors/destructors
 WindowFunction::WindowFunction(int winSize) {
-	m_winType = 2; // hanning window by default
+	m_winType = WINDOW_TYPE_HANNING; // hanning window by default
 	m_winSize = winSize;
 	void calculate_window();
 }
 
-WindowFunction::WindowFunction(int winType, WindowType winType) {
+WindowFunction::WindowFunction(int winSize, WindowType winType) {
 	m_winType = winType;
 	m_winSize = winSize;
 	void calculate_window();	
@@ -24,12 +24,12 @@ WindowFunction::~WindowFunction() {
 
 // getters and setters
 
-void WindowFunction::set_winType(int winType) {
+void WindowFunction::set_winType(WindowType winType) {
 	m_winType = WindowType(winType);
 }
 
-int WindowFunction::get_winType() const {
-	return int(m_winType);
+WindowType WindowFunction::get_winType() {
+	return m_winType;
 }
 
 void WindowFunction::set_winSize(int winSize){

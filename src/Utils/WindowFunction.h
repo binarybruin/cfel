@@ -20,13 +20,13 @@ class WindowFunction {
 		WindowFunction(int winSize, WindowType winType);
 		~WindowFunction();
 		
-		void set_winType(int winType);
+		void set_winType(WindowType winType);
 	    WindowType get_winType();
 				
 		void set_winSize(int winSize);
 		int get_winSize();
 		
-		SAMPLE* getWindow();
+		SAMPLE* get_window();
 		void calculate_window();
 };
 

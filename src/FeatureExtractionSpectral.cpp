@@ -26,18 +26,21 @@ FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize
 }
 
 FeatureExtractionSpectral::~FeatureExtractionSpectral(){
+	int winSize = this->get_winSize();
+	int nCols = this->get_nCols();
+	
 	if (m_signal != NULL){
 		free(m_signal);
 	}
 	
 	if (m_feature != NULL){
-		for (int i = 0; i < m_nCols; ++i){
+		for (int i = 0; i < nCols; ++i){
 			free(m_feature[i]);
 		}
 	}
 	
 	if (m_magSpec != NULL){
-		for (int i = 0; i < m_nWinSize / 2 + 1; ++i){
+		for (int i = 0; i < winSize / 2 + 1; ++i){
 			free(m_magSpec[i]);
 		}
 	}
@@ -52,13 +55,13 @@ void FeatureExtractionSpectral::set_winType(int winType){
 	m_winType = winType;
 }
 
-SAMPLE** FeatureExtractionSpectral::get_fBinSize(){
+SAMPLE FeatureExtractionSpectral::get_fBinSize(){
 	return m_fBinSize;
 }
 
-void FeatureExtractionSpectra::calculate_fBinSize(){
-	int fs = this->get_fs()
-	int winSize = this->get_winSize()
+void FeatureExtractionSpectral::calculate_fBinSize(){
+	int fs = this->get_fs();
+	int winSize = this->get_winSize();
 	m_fBinSize = (fs/2)/winSize;
 }
 
@@ -78,28 +81,28 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 		m_magSpec[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
 	}
 	
-	// get buffer
-	SAMPLE* buffer = this->get_buffer();
+	// get buffer (signal)
+	SAMPLE* signal = this->get_signal();
 	
 	// get window
 	WindowFunction* windowObj = new WindowFunction(winSize);
-	SAMPLE* window = windowObj->getWindow();
+	SAMPLE* window = windowObj->get_window();
 	SAMPLE winSig[winSize]; // windowed sig
 	
 	// get the magnitude spectrum
 	SAMPLE* fftOut; 
-	for (i = 0; i < nRows; ++i){
+	for (int i = 0; i < nRows; ++i){
 	
 		// hopping (happens in buffer) and windowing
 		for (int j = 0; j < winSize; ++j){
-			winSig[j] = buffer[i*hopSize+j]*window[j];
+			winSig[j] = signal[i*hopSize+j]*window[j];
 			
 		}
 		
 		fftout = fft(winSig);
 		
 		// put the fftout to m_magSpec
-		for (j = 0; j < winSize / 2 + 1; ++j){
+		for (int j = 0; j < winSize / 2 + 1; ++j){
 			m_magSpec[i][j] = (SAMPLE)abs(fftOut[i]);
 		}
 	}

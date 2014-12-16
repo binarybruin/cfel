@@ -42,7 +42,7 @@ class FeatureExtraction {
 		~FeatureExtraction();
 
 		SAMPLE*			get_signal();
-		void			set_signal(float* signal);
+		void			set_signal(SAMPLE* signal);
 		int				get_bufSize();
 		void			set_bufSize(int bufSize);
 		int				get_fs();
