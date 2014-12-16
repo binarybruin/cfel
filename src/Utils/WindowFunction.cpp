@@ -46,11 +46,12 @@ SAMPLE* WindowFunction::get_window(){
 
 void WindowFunction::calculate_window() {
 	int m = m_winSize / 2;
-
+	SAMPLE r;
+	
 	switch (m_winType) {
 	case WINDOW_TYPE_BARTLETT: // Bartlett (triangular) window
 			for (int n = 0; n < m_winSize; n++)
-					m_window[n] = 1.0 - fabs(n - m) / m;
+					m_window[n] = 1.0 - (double)(std::abs(n - m)) /(double)m;
 			break;
 
 	case WINDOW_TYPE_HANNING: // Hann window

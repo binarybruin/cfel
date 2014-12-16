@@ -36,7 +36,7 @@ vector<complex<SAMPLE> > FFT::fft(vector<complex<SAMPLE> > x) {
 	for (int k = 0; k < N/2; k++) {
 		SAMPLE kth = -2.0 * (SAMPLE)k * M_PI / (SAMPLE)N;
 		complex<SAMPLE> wk = complex<SAMPLE>(cos(kth), sin(kth));
-		y[k]       = q[k] + wk*r[k];1
+		y[k]       = q[k] + wk*r[k];
 		y[k + N/2] = q[k] - wk*r[k];
 	}
 	return y;
