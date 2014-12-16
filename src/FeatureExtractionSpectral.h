@@ -26,6 +26,7 @@ class FeatureExtractionSpectral: public FeatureExtraction
     private:
         // borrow FFT function from external library...
         int m_winType;
+		SAMPLE m_fBinSize;
         SAMPLE** m_magSpec;
 
     public:
@@ -35,7 +36,10 @@ class FeatureExtractionSpectral: public FeatureExtraction
 
         int get_winType();
         void set_winType(int winType);
-
+		
+		SAMPLE get_fBinSize();
+		void calculate_fBinSize();
+		
         SAMPLE** get_magSpec();
         void calculate_magSpec();
 };

@@ -17,7 +17,8 @@ void calculate_feature(){ // compute Spectral centroid
 
 	double fSum = 0.0;
 	double fWeightedSum = 0.0;
-	double window[m_winSize];
+	
+	SAMPLE fBinSize = this->get_fBinSize();
 	
 	
 	

@@ -21,7 +21,7 @@ FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize
 	set_fs(fs);
 	set_winSize(winSize);
 	set_hopSize(hopSize);
-	
+	calculate_fBinSize();
 	calculate_magSpec();
 }
 
@@ -51,7 +51,18 @@ int FeatureExtractionSpectral::get_winType(){
 void FeatureExtractionSpectral::set_winType(int winType){
 	m_winType = winType;
 }
-		
+
+SAMPLE** FeatureExtractionSpectral::get_fBinSize(){
+	return m_fBinSize;
+}
+
+void FeatureExtractionSpectra::calculate_fBinSize(){
+	int fs = this->get_fs()
+	int winSize = this->get_winSize()
+	m_fBinSize = (fs/2)/winSize;
+}
+
+
 SAMPLE** FeatureExtractionSpectral::get_magSpec(){
 	return m_magSpec;
 }
@@ -85,7 +96,7 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 			
 		}
 		
-		fftout = FFT(winSig);
+		fftout = fft(winSig);
 		
 		// put the fftout to m_magSpec
 		for (j = 0; j < winSize / 2 + 1; ++j){
