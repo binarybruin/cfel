@@ -35,25 +35,37 @@ SAMPLE** FeatureExtractionSpectral::get_magSpec(){
 }
 		
 void FeatureExtractionSpectral::calculate_magSpec(){
-
+	int hopSize = this->get_hopSize();
 	int winSize = this->get_winSize();
-
-	m_magSpec = (SAMPLE**) malloc (winSize*sizeof(SAMPLE*));
+	int nRows = this->get_nRows(); // vertical time axis
 	
-	for (int i = 0; i < winSize; ++i){
-		m_magSpec[i] = (SAMPLE*)malloc(this->get_nRows()*sizeof(SAMPLE*));
+	// memory allocation for m_magSpec;
+	m_magSpec = (SAMPLE**) malloc (winSize*sizeof(SAMPLE*));
+	for (int i = 0; i < winSize / 2 + 1; ++i){
+		m_magSpec[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
 	}
-
+	
+	// get buffer
+	SAMPLE* buffer = this->get_buffer();
+	
 	// get window
 	WindowFunction* windowObj = new WindowFunction(winSize);
-	SAMPLE* window = windowObj->getWindow();		// TODO: Where do you use window? - added fft, but not sure how to use here
+	SAMPLE* window = windowObj->getWindow();
+	SAMPLE winSig[winSize]; // windowed sig
 	
-	// get fft
-	SAMPLE* fftOut = fft(window);
-	
-	// get the magnitude spectrum of the complex fft result
-	for (int i = 0; i < winSize / 2 + 1; i++)
-		*m_magSpec[i] = (SAMPLE)abs(fftOut[i]);
-
+	// get the magnitude spectrum
+	SAMPLE* fftOut; 
+	for (i = 0; i < nRows; ++i){
+		// hopping (happens in buffer) and windowing
+		for (int j = 0; j < winSize; ++j){
+			winSig[j] = buffer[i*hopSize+j]*window[j];
+			
+		}
+		fftout = FFT(winSig);
+		
+		for (j = 0; j < winSize/2+1; ++j){
+			m_magSpec[i][j] = (SAMPLE)abs(fftOut[i]);
+		}
+	}
 }
 
