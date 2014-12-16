@@ -28,29 +28,16 @@ class FeatureExtractionSpectral: public FeatureExtraction
         int m_winType;
         SAMPLE** m_magSpec;
 
-<<<<<<< HEAD
-	public:
-		
-		FeatureExtractionSpectral();
-		~FeatureExtractionSpectral();
-		
-		int get_winType();
-		void set_winType(int winType);
-		SAMPLE** get_magSpec();
-		void calculate_magSpec();
-};
-
-#endif
-=======
     public:
 
         FeatureExtractionSpectral();
-        ~FeatureExtractionSPectral();
+        ~FeatureExtractionSpectral();
 
         int get_winType();
         void set_winType(int winType);
 
         SAMPLE** get_magSpec();
         void calculate_magSpec();
-}
->>>>>>> 1c1f6c4c216f142add73ba11e9703fa576998778
+};
+
+#endif
