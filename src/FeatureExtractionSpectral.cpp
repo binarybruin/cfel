@@ -13,6 +13,8 @@
 //
 // =================================================================== //
 
+#include "FeatureExtractionSpectral.h"
+
 FeatureExtractionSpectral::FeatureExtractionSpectral(){
 }
 
@@ -34,20 +36,24 @@ SAMPLE** FeatureExtractionSpectral::get_magSpec(){
 		
 void FeatureExtractionSpectral::calculate_magSpec(){
 
-	m_magSpec = (SAMPLE**)malloc(nWinSize*sizeof(SAMPLE*));
+	int winSize = this->get_winSize();
+
+	m_magSpec = (SAMPLE**) malloc (winSize*sizeof(SAMPLE*));
 	
-	for (int i = 0; i < nWinSize; ++i){
-		magSpec[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
+	for (int i = 0; i < winSize; ++i){
+		m_magSpec[i] = (SAMPLE*)malloc(this->get_nRows()*sizeof(SAMPLE*));
 	}
 
 	// get window
-	WindowFunction windowObj = new WindowFunction(m_winSize);
-	window = windowObj.get_window();
+	WindowFunction* windowObj = new WindowFunction(winSize);
+	SAMPLE* window = windowObj->getWindow();		// TODO: Where do you use window? - added fft, but not sure how to use here
 	
+	// get fft
+	SAMPLE* fftOut = fft(window);
 	
 	// get the magnitude spectrum of the complex fft result
-	for (int i = 0; i < nNumSamples/2+1; i++)
-		magSpec[i] = abs(fftOut[i]);
+	for (int i = 0; i < winSize / 2 + 1; i++)
+		*m_magSpec[i] = (SAMPLE)abs(fftOut[i]);
 
 }
 

@@ -13,6 +13,12 @@
 //
 // =================================================================== //
 
+#ifndef __CFEL__FeatureExtractionSpectral__
+#define __CFEL__FeatureExtractionSpectral__
+
+#include "FeatureExtraction.h"
+#include "Utils/WindowFunction.h"
+#include "Utils/FFT.h"
 
 class FeatureExtractionSpectral: public FeatureExtraction
 {
@@ -25,10 +31,12 @@ class FeatureExtractionSpectral: public FeatureExtraction
 	public:
 		
 		FeatureExtractionSpectral();
-		~FeatureExtractionSPectral();
+		~FeatureExtractionSpectral();
 		
 		int get_winType();
 		void set_winType(int winType);
 		SAMPLE** get_magSpec();
 		void calculate_magSpec();
-}
+};
+
+#endif
