@@ -87,7 +87,7 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 	// get window
 	WindowFunction* windowObj = new WindowFunction(winSize);
 	SAMPLE* window = windowObj->get_window();
-	SAMPLE winSig[winSize]; // tODO: winSize must be constant??
+	SAMPLE* winSig = (SAMPLE*)malloc(winSize*sizeof(SAMPLE)); // windowed sig
 	
 	// get the magnitude spectrum
 	SAMPLE* fftOut; 

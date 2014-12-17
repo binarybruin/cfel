@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <math.h>
 
-typedef float SAMPLE;
+typedef double SAMPLE;
 
 class FeatureExtraction {
 	private:
@@ -29,10 +29,8 @@ class FeatureExtraction {
 		int				m_fs;
 		int				m_winSize;
 		int				m_hopSize;
-		//int				initTime;
 
 		// output parameters
-		//float*			m_featureTime;
 		SAMPLE**		m_feature;
 		int				m_nRows;
 		int				m_nCols;
