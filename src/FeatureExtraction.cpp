@@ -25,6 +25,9 @@ FeatureExtraction::FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int wi
 	set_fs(fs);
 	set_winSize(winSize);
 	set_hopSize(hopSize);
+	set_nRows(ceil(bufSize/hopSize)); 
+	set_nCols(1); // TODO: this needs to be changed per Feature....Should we overload constructor each time?
+	calculate_feature();
 } 
 
 FeatureExtraction::~FeatureExtraction(){
@@ -51,7 +54,7 @@ SAMPLE* FeatureExtraction::get_signal(){
 	}
 }
 
-void FeatureExtractionRMS::set_signal(SAMPLE* signal){
+void FeatureExtraction::set_signal(SAMPLE* signal){
 	if (signal == NULL){
 		printf("input signal is null\n");
 		return;
@@ -63,58 +66,68 @@ void FeatureExtractionRMS::set_signal(SAMPLE* signal){
 	}
 }
 
-int FeatureExtractionRMS::get_bufSize(){
+int FeatureExtraction::get_bufSize(){
 	return this->m_bufSize;
 }
 
-void FeatureExtractionRMS::set_bufSize(int bufSize){
+void FeatureExtraction::set_bufSize(int bufSize){
 	this->m_bufSize = bufSize;
 }
 
-int FeatureExtractionRMS::get_fs(){
+int FeatureExtraction::get_fs(){
 	return this->m_fs;
 }
 
-void FeatureExtractionRMS::set_fs(int fs){
+void FeatureExtraction::set_fs(int fs){
 	this->m_fs = fs;
 }
 
-int FeatureExtractionRMS::get_winSize(){
+int FeatureExtraction::get_winSize(){
 	return this->m_winSize;
 }
 
-void FeatureExtractionRMS::set_winSize(int winSize){
+void FeatureExtraction::set_winSize(int winSize){
 	this->m_winSize = winSize;
 }
 
-int FeatureExtractionRMS::get_hopSize(){
+int FeatureExtraction::get_hopSize(){
 	return this->m_hopSize;
 }
 
-void FeatureExtractionRMS::set_hopSize(int hopSize){
+void FeatureExtraction::set_hopSize(int hopSize){
 	this->m_hopSize = hopSize;
 }
 
 // feature computation
 
-int FeatureExtractionRMS::get_nRows(){
+int FeatureExtraction::get_nRows(){
 	return this->m_nRows;
 }
 
-int FeatureExtractionRMS::get_nCols(){
+void FeatureExtraction::set_nRows(int nRows){
+	this->m_nRows = nRows;
+}
+
+int FeatureExtraction::get_nCols(){
 	return this->m_nCols;
 }
 
-SAMPLE** FeatureExtractionRMS::get_feature(){
+void FeatureExtraction::set_nCols(int nCols){
+	this->m_nCols = nCols;
+}
+
+
+SAMPLE** FeatureExtraction::get_feature(){
 	return this->m_feature;
 }
 
-virtual FeatureExtractionRMS::void calculate_feature(){
-	printf("Feature computed\n");
+void virtual FeatureExtraction::calculate_feature(){
+	return;
 }
 
 // preprocess
 
 virtual void preprocess(){
+	return;
 }
 

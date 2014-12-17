@@ -49,13 +49,17 @@ class FeatureExtraction {
 		void			set_winSize(int winSize);
 		int				get_hopSize();
 		void			set_hopSize(int hopSize);
+			
 		
-		virtual void	preprocess();
-
+		
+		int				get_nRows();
+		void			set_nRows();
+		int				get_nCols();
+		void			set_nCols();
 		SAMPLE**		get_feature();
 		virtual void	calculate_feature();
-		int				get_nRows();
-		int				get_nCols();
+		
+		virtual void	preprocess();
 };
 
 #endif

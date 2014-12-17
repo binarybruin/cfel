@@ -33,16 +33,17 @@ void FeatureRMS::calculate_feature(){
 			int nRows = get_nRows();
 			
 			// allocate memory for feature
-			m_feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
+			m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE*));
 			for (int i = 0; i < nCols; ++i){
-				m_feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
+				m_feature[i] = (SAMPLE*)malloc(nCols*sizeof(SAMPLE));
 			}
 			
 			// RMS calculation
-			SAMPLE sqrSum = 0.0;
+			SAMPLE sqrSum;
 			SAMPLE val;
-			for (i = 0; i < nCols; ++i){			
+			for (int i = 0; i < nCols; ++i){			
 				for (int j = 0; j < nRows; ++j){
+					sqrSum = 0.0;
 					for (int k = 0; k < winSize; ++k){
 						if (j*hopSize+k >= bufSize){ // conceptually zero-padding
 							val = 0;
@@ -52,7 +53,7 @@ void FeatureRMS::calculate_feature(){
 						}
 						sqrSum += val*val;
 					}
+					m_feature[j][i] = sqrt(sqrSum/(SAMPLE)winSize);
 				}
-				m_feature[j][i] = sqrt(sqrSum/(SAMPLE)winSize);
 			}
 		}
