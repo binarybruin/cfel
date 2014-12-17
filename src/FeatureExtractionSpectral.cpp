@@ -77,13 +77,17 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 	int bufSize = this->get_bufSize();
 	int hopSize = this->get_hopSize();
 	int winSize = this->get_winSize();
+	WindowType winType = this->get_winType();
+	
+	// TODO: set row elsewhere?
+	set_nRows(ceil(bufSize/(double)hopSize)); 
 	int nRows = this->get_nRows();
 
 	int nFFTCols = (winSize / 2) + 1;
 	
 	// get window; TODO: get this elsewhere?
 	SAMPLE* window; // Q: const value?
-	WindowFunction* winObj = new WindowFunction(winSize, WINDOW_TYPE_HANNING);
+	WindowFunction* winObj = new WindowFunction(winSize, winType);
 	window = winObj->get_window();
 	
 	// memory allocation for m_magSpec (vertical time axis and horizontal window)
