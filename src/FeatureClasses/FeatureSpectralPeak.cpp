@@ -17,11 +17,11 @@
 
 #include <iostream>
 #include <fstream>
+#include <alogrithm>
 
 using namespace FeatureExtraction::Utils;
 
 void FeatureSpectralPeak::calculate_feature(){
-
 	
 	int fs = this->get_fs();
 	SAMPLE* signal = this->get_signal();
@@ -29,26 +29,33 @@ void FeatureSpectralPeak::calculate_feature(){
 	int winSize = this->get_winSize();
 	int hopSize = this->get_hopSize();
 	SAMPLE fBinSize = this->get_fBinSize();
-	
+
 	// set and get nCols and nRows
 	set_nCols(1);
-	set_nRows(ceil(bufSize/hopSize);
-	nCols = get_nCols();
-	nRows = get_nRows();
-	
+	set_nRows(ceil(bufSize / hopSize);
+	int nCols = get_nCols();
+	int nRows = get_nRows();
+
 	// allocate memory for feature
-	m_feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
+	this->m_feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
 	for (int i = 0; i < nCols; ++i){
 		m_feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
 	}
 
 	// get magnitude spectrum
-	FeatureExtractionSpectral *spectral = new FeatureExtractionSpectral();
-	SAMPLE** pMagSpec = spectral->get_magSpec();
+	SAMPLE** magSpec = this->get_magSpec();
+	SAMPLE* oneRow;
+	int maxIdx;
+	for (int i = 0; i < nRows; i++){
+		// take one entire row and its value
+		oneRow = m_feature[i];
+		int rowLen = sizeof(oneRow)/ sizeof(SAMPLE);
+		SAMPLE maxVal = *std::max_element(oneRow, oneRow + rowLen);
 
-	
-	for (int i = 0; i < nRows; i++)
-		// TODO: get the frequency bin size and multiply with the INDEX of the frequeny bin of the largest value
-		m_feature[i] = std::max_element("entireRow")*fBinSize; // TODO: need to be fixed
-
+		// compute the distance
+		maxIdx = *std::distance(oneRow, maxVal);
+		
+		// get the freq value
+		m_feature[i][0] = maxIdx*fBinSize;
+	}
 }
