@@ -28,7 +28,7 @@ void FeatureZCR::calculate_feature(){
 
 			// set nCols and nRows (move to somewhere else?)
 			set_nCols(1);
-			set_nRows(ceil(bufSize/hopSize));
+			set_nRows(ceil(bufSize/(double)hopSize));
 			int nCols = get_nCols();
 			int nRows = get_nRows();
 			
