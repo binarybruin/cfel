@@ -91,7 +91,7 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 	window = winObj->get_window();
 	
 	// memory allocation for m_magSpec (vertical time axis and horizontal window)
-	SAMPLE** m_magSpec = (SAMPLE**)malloc(nFFTCols*sizeof(SAMPLE*));
+	this->m_magSpec = (SAMPLE**)malloc(nFFTCols*sizeof(SAMPLE*));
 	for (int i = 0; i < nFFTCols; ++i){
 		m_magSpec[i] = (SAMPLE*)malloc(nRows * sizeof(SAMPLE));
 	}

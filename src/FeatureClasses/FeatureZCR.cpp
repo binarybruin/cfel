@@ -33,7 +33,7 @@ void FeatureZCR::calculate_feature(){
 			int nRows = get_nRows();
 			
 			// allocate memory for feature
-			m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE));
+			this->m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE));
 			for (int i = 0; i < nRows; ++i){
 				m_feature[i] = (SAMPLE*)malloc(nCols*sizeof(SAMPLE*));
 			}
