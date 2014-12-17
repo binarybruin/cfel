@@ -25,8 +25,6 @@ FeatureExtraction::FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int wi
 	set_fs(fs);
 	set_winSize(winSize);
 	set_hopSize(hopSize);
-	set_nRows(ceil(bufSize/hopSize)); 
-	set_nCols(1); // TODO: this needs to be changed per Feature....Should we overload constructor each time?
 	calculate_feature();
 } 
 
