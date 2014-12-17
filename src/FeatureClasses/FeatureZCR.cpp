@@ -33,18 +33,18 @@ void FeatureZCR::calculate_feature(){
 			int nRows = get_nRows();
 			
 			// allocate memory for feature
-			m_feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
-			for (int i = 0; i < nCols; ++i){
-				m_feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
+			m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE));
+			for (int i = 0; i < nRows; ++i){
+				m_feature[i] = (SAMPLE*)malloc(nCols*sizeof(SAMPLE*));
 			}
 			
 			// ZCR calculation
 			int zcc; // zero crossing count
-			for (i = 0; i < nCols; ++i){			
+			for (int i = 0; i < nCols; ++i){			
 				for (int j = 0; j < nRows; ++j){
 					zcc = 0;
 					for (int k = 0; k < winSize; ++k){
-						if (j*hopSize+k < bufSize-1){ // conceptually zero-padding
+						if (j*hopSize+k+1 < bufSize){ // conceptually zero-padding
 							// check the sign of two consecutive samples
 							if (buffer[j*hopSize+k] < 0 && buffer[j*hopSize+k+1] > 0){
 								++zcc;
