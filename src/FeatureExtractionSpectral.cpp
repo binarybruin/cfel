@@ -91,6 +91,9 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 		m_magSpec[i] = (SAMPLE*)malloc(nRows * sizeof(SAMPLE));
 	}
 	
+	std::vector<std::complex<double> > complexIn(winSize);
+	std::vector<std::complex<double> > fftOut;
+	
 	// store double array as complex data type to conform with the FFT algorithm used here
 	for (int i = 0; i < nRows; i++){
 		for (int j = 0; j < winSize; j++){
