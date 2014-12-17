@@ -73,6 +73,7 @@ SAMPLE** FeatureExtractionSpectral::get_magSpec(){
 		
 void FeatureExtractionSpectral::calculate_magSpec(){
 	// bring in necessary variables
+	SAMPLE* signal = this->get_signal();
 	int bufSize = this->get_bufSize();
 	int hopSize = this->get_hopSize();
 	int winSize = this->get_winSize();
