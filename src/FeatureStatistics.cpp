@@ -192,12 +192,6 @@ void FeatureStatistics::set_sHopSize(int sHopSize){
 	m_sHopSize = sHopSize;
 }
 
-//SAMPLE* get_featureTime();
-// void set_featureTime()
-
-
-
-
 SAMPLE** FeatureStatistics::get_mean(){
 	return m_mean;
 }
@@ -257,15 +251,15 @@ void FeatureStatistics::set_d1Features(){
 		m_d1Feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE));
 	}
 	m_d1Mean = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		m_d1Mean[i] = (SAMPLE*)malloc(m_nStatRows*sizeof(SAMPLE));
 	}
 	m_d1Var = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		m_d1Var[i] = (SAMPLE*)malloc(m_nStatRows*sizeof(SAMPLE));
 	}
 	m_d1Std = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		m_d1Std[i] = (SAMPLE*)malloc(m_nStatRows*sizeof(SAMPLE));
 	}
 	
@@ -299,15 +293,15 @@ void FeatureStatistics::set_d2Features(){
 		m_d2Feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE));
 	}
 	m_d2Mean = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		m_d2Mean[i] = (SAMPLE*)malloc(m_nStatRows*sizeof(SAMPLE));
 	}
 	m_d2Var = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		m_d2Var[i] = (SAMPLE*)malloc(m_nStatRows*sizeof(SAMPLE));
 	}
 	m_d2Std = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		m_d2Std[i] = (SAMPLE*)malloc(m_nStatRows*sizeof(SAMPLE));
 	}
 	
@@ -335,7 +329,7 @@ SAMPLE** FeatureStatistics::calculate_mean(SAMPLE** feature){
 	//take column by column to compute mean within each hopping window	
 	SAMPLE sum;
 	SAMPLE val;
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		for (int j = 0; j < m_nStatRows; ++j){
 		    sum = 0;
 			for (int k = 0; k < m_sWinSIze; ++k){
@@ -371,7 +365,7 @@ SAMPLE** FeatureStatistics::calculate_var(SAMPLE** feature, SAMPLE** mean){
 	SAMPLE sqrSum;
 	SAMPLE dif;
 	SAMPLE val;
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		for (int j = 0; j < m_nStatRows; ++j){
 		    sum = 0;
 			for (int k = 0; k < m_sWinSIze; ++k){
@@ -405,7 +399,7 @@ SAMPLE** FeatureStatistics::calculate_var2std(SAMPLE** var){
     }
 	
 	// std calculation
-	for (i = 0; i < m_nStatCols; ++i){
+	for (int i = 0; i < m_nStatCols; ++i){
 		for (int j = 0; j < m_nStatRows; ++j){
 		    retVal[j][i] = sqrt(var[j][i]);
         }
@@ -430,7 +424,7 @@ SAMPLE** FeatureStatistics::calculate_delta(SAMPLE** feature){
 	// difference calculation
 	SAMPLE curr;
 	SAMPLE next;
-	for (i = 0; i < m_nCols; ++i){
+	for (int i = 0; i < m_nCols; ++i){
 		for (int j = 0; j < m_nRows; ++j){
 			curr = feature[j][i];
 			if (j+1 < m_nRows){

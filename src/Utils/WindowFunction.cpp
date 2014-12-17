@@ -9,13 +9,13 @@ using namespace std;
 WindowFunction::WindowFunction(int winSize) {
 	m_winType = WINDOW_TYPE_HANNING; // hanning window by default
 	m_winSize = winSize;
-	void calculate_window();
+	calculate_window();
 }
 
 WindowFunction::WindowFunction(int winSize, WindowType winType) {
 	m_winType = winType;
 	m_winSize = winSize;
-	void calculate_window();	
+	calculate_window();	
 }
 
 WindowFunction::~WindowFunction() {
@@ -45,12 +45,16 @@ SAMPLE* WindowFunction::get_window(){
 }
 
 void WindowFunction::calculate_window() {
-	int m = m_winSize / 2;
+	// memory allocaiton
+	int winSize = this->get_winSize();
+	m_window = (SAMPLE*)malloc(sizeof(SAMPLE)*winSize);
+	
+	int m = winSize / 2;
 	SAMPLE r;
 	
 	switch (m_winType) {
 	case WINDOW_TYPE_BARTLETT: // Bartlett (triangular) window
-			for (int n = 0; n < m_winSize; n++)
+			for (int n = 0; n < winSize; n++)
 					m_window[n] = 1.0 - (double)(std::abs(n - m)) /(double)m;
 			break;
 
@@ -73,7 +77,7 @@ void WindowFunction::calculate_window() {
 			break;
 
 	default: // Rectangular window function
-			for (int n = 0; n < m_winSize; n++)
+			for (int n = 0; n < winSize; n++)
 					m_window[n] = 1.0;
 			break;
 	}

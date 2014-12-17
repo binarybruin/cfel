@@ -53,9 +53,9 @@ class FeatureExtraction {
 		
 		
 		int				get_nRows();
-		void			set_nRows();
+		void			set_nRows(int nRows);
 		int				get_nCols();
-		void			set_nCols();
+		void			set_nCols(int nCols);
 		SAMPLE**		get_feature();
 		virtual void	calculate_feature();
 		

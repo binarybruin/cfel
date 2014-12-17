@@ -39,7 +39,7 @@ vector<complex<SAMPLE> > FFT::fft(vector<complex<SAMPLE> > x) {
 		y[k]       = q[k] + wk*r[k];
 		y[k + N/2] = q[k] - wk*r[k];
 	}
-	return y;
+	return y; // COMMENT: fft output size is just half the size, not half +1
 }
 
 }

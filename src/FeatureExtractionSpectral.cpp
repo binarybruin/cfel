@@ -15,12 +15,13 @@
 
 #include "FeatureExtractionSpectral.h"
 
-FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize){
+FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize, WindowType winType){
 	set_signal(signal);
 	set_bufSize(bufSize);
 	set_fs(fs);
 	set_winSize(winSize);
 	set_hopSize(hopSize);
+	set_winType(winType);
 	calculate_fBinSize();
 	calculate_magSpec();
 }
@@ -47,12 +48,12 @@ FeatureExtractionSpectral::~FeatureExtractionSpectral(){
 }
 
 
-int FeatureExtractionSpectral::get_winType(){
+WindowType FeatureExtractionSpectral::get_winType(){
 	return m_winType; // refer to WindowFunction.h for detailed info on Windows
 }
 
-void FeatureExtractionSpectral::set_winType(int winType){
-	m_winType = winType;
+void FeatureExtractionSpectral::set_winType(WindowType winType){
+	this->m_winType = winType;
 }
 
 SAMPLE FeatureExtractionSpectral::get_fBinSize(){
@@ -87,16 +88,16 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 	// get window
 	WindowFunction* windowObj = new WindowFunction(winSize);
 	SAMPLE* window = windowObj->get_window();
-	SAMPLE* winSig = (SAMPLE*)malloc(winSize*sizeof(SAMPLE)); // windowed sig
-	
+	//SAMPLE* winSig = (SAMPLE*)malloc(winSize*sizeof(SAMPLE)); // windowed sig
+	std::vector<std::complex<SAMPLE>>winSig;
+		
 	// get the magnitude spectrum
-	SAMPLE* fftOut; 
+	std::vector<std::complex<SAMPLE>> fftOut; 
 	for (int i = 0; i < nRows; ++i){
 	
 		// hopping (happens in buffer) and windowing
 		for (int j = 0; j < winSize; ++j){
 			winSig[j] = signal[i*hopSize+j]*window[j];
-			
 		}
 		
 		fftOut = fft(winSig); // TODO: fft outcome not compatible with SAMPLE
