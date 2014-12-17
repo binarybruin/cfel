@@ -21,17 +21,15 @@
 
 #include "FeatureExtraction.h"
 
-class FeatureStatistics { // put this class inside FeatureExtr class?
+class FeatureStatistics 
+{
 	private:
 		// input parameters
-		SAMPLE** 		m_feature; 
-		int 			m_nRows;
-		int 			m_nCols;
+		FeatureExtraction* m_featureObject;
 		int 			m_sWinSize; // statistics winSize
 		int 			m_sHopSize; // statistics hopSize
 		int				m_nStatRows;
 		int				m_nStatCols;
-		//SAMPLE* featureTime;
 		
 		// output parameters
 		int 			m_nStatRows;
@@ -50,29 +48,26 @@ class FeatureStatistics { // put this class inside FeatureExtr class?
 		SAMPLE** 		m_d2Mean;
 		SAMPLE** 		m_d2Std;
 		SAMPLE** 		m_d2Var;
-		//SAMPLE* statTime;
 
 	public:
-		FeatureStatistics(FeatureExtraction featureObject);
+		FeatureStatistics(FeatureExtraction* featureObject, int sWinSize, int sHopSize);
 		~FeatureStatistics();
 
-		SAMPLE** 		get_feature();
-		void 			set_feature(SAMPLE** feature);
-		int 			get_nRows(); 
-		void 			set_nRows(int nRow);
-		int 			get_nCols();
-		void 			set_nCols(int nCol);
+		FeatureExtraction* 	get_featureObject();
+		void 			set_featureObject(FeatureExtraction* featureObject);
 		int 			get_sWinSize();
 		void 			set_sWinSize(int sWinSize);
 		int 			get_sHopSize();
 		void 			set_sHopSize(int sHopSize);
-		//SAMPLE* get_featureTime();
-		// void set_featureTime()
+		int 			get_nStatRows();
+		void 			calculate_nStatRows();
+		int 			get_nStatCols();
+		void 			calculaate_nStatCols();
 		 
 		SAMPLE** 		get_mean();
 		SAMPLE** 		get_std();
 		SAMPLE** 		get_var();
-		void 			set_features(); // set features and nStatCols/nStatRows
+		void 			set_d0features(); // set features and nStatCols/nStatRows
 		
 		SAMPLE** 		get_d1Feature();
 		SAMPLE** 		get_d1Mean();
