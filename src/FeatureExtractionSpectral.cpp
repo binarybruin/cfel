@@ -72,39 +72,38 @@ SAMPLE** FeatureExtractionSpectral::get_magSpec(){
 }
 		
 void FeatureExtractionSpectral::calculate_magSpec(){
+	// bring in necessary variables
+	int bufSize = this->get_bufSize();
 	int hopSize = this->get_hopSize();
 	int winSize = this->get_winSize();
-	int nRows = this->get_nRows(); // vertical time axis
+	int nRows = this->get_nRows();
+
+	int nFFTCols = (winSize / 2) + 1;
 	
-	// memory allocation for m_magSpec;
-	m_magSpec = (SAMPLE**) malloc (winSize*sizeof(SAMPLE*));
-	for (int i = 0; i < winSize / 2 + 1; ++i){
-		m_magSpec[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
+	// get window; TODO: get this elsewhere?
+	SAMPLE* window; // Q: const value?
+	WindowFunction* winObj = new WindowFunction(winSize, WINDOW_TYPE_HANNING);
+	window = winObj->get_window();
+	
+	// memory allocation for m_magSpec (vertical time axis and horizontal window)
+	SAMPLE** m_magSpec = (SAMPLE**)malloc(nFFTCols*sizeof(SAMPLE*));
+	for (int i = 0; i < nFFTCols; ++i){
+		m_magSpec[i] = (SAMPLE*)malloc(nRows * sizeof(SAMPLE));
 	}
 	
-	// get buffer (signal)
-	SAMPLE* signal = this->get_signal();
-	
-	// get window
-	WindowFunction* windowObj = new WindowFunction(winSize);
-	SAMPLE* window = windowObj->get_window();
-	//SAMPLE* winSig = (SAMPLE*)malloc(winSize*sizeof(SAMPLE)); // windowed sig
-	std::vector<std::complex<SAMPLE>>winSig;
-		
-	// get the magnitude spectrum
-	std::vector<std::complex<SAMPLE>> fftOut; 
-	for (int i = 0; i < nRows; ++i){
-	
-		// hopping (happens in buffer) and windowing
-		for (int j = 0; j < winSize; ++j){
-			winSig[j] = signal[i*hopSize+j]*window[j];
+	// store double array as complex data type to conform with the FFT algorithm used here
+	for (int i = 0; i < nRows; i++){
+		for (int j = 0; j < winSize; j++){
+			if (i*hopSize + j < bufSize){
+				complexIn[j] = std::complex<SAMPLE>(signal[i*hopSize + j] * window[j], 0.0);
+			}
+			else{ //zero-padding
+				complexIn[j] = std::complex<SAMPLE>(0 * window[j], 0.0);
+			}
 		}
-		
-		fftOut = fft(winSig); // TODO: fft outcome not compatible with SAMPLE
-		
-		// put the fftout to m_magSpec
-		for (int j = 0; j < winSize / 2 + 1; ++j){
-			m_magSpec[i][j] = (SAMPLE)abs(fftOut[i]);
+		fftOut = FFT::fft(complexIn);
+		for (int j = 0; j < nFFTCols; j++){
+			m_magSpec[i][j] = abs(fftOut[i]);
 		}
 	}
 }
