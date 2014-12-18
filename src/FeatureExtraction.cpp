@@ -122,9 +122,13 @@ SAMPLE** FeatureExtraction::get_feature(){
 
 void FeatureExtraction::new_feature(int nRows, int nCols){
 	m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE*));
-	for (int i = 0; i < nCols; ++i){
+	for (int i = 0; i < nRows; ++i){
 		m_feature[i] = (SAMPLE*)malloc(nCols*sizeof(SAMPLE));
 	}
+}
+
+void FeatureExtraction::set_feature(int col, int row, SAMPLE result) {
+	m_feature[row][col] = result;
 }
 
 SAMPLE** FeatureExtraction::calculate_feature(){

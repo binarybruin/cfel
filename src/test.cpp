@@ -43,11 +43,12 @@ int main() {
 	}
 
 	SAMPLE** feature = featureRMS->get_feature();
-	for (int i = 0; i < nCols; i++) {
+	/*for (int i = 0; i < nCols; i++) {
 		for (int j = 0; j < nRows; j++) {
 			std::cout << feature[j][i] << std::endl;
 		}
-	}
+	}*/
+	std::cout << featureRMS->get_feature()[0][0] << std::endl;
 
 	char input;
 	std::cin >> input;

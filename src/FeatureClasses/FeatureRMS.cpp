@@ -40,7 +40,7 @@ SAMPLE** FeatureRMS::calculate_feature(){
 			
 			// allocate memory for feature
 			this->new_feature(nRows, nCols);
-			SAMPLE** feature = this->get_feature();
+			//SAMPLE** feature = this->get_feature();
 			
 			// RMS calculation
 			SAMPLE sqrSum;
@@ -57,8 +57,9 @@ SAMPLE** FeatureRMS::calculate_feature(){
 						}
 						sqrSum += val*val;
 					}
-					feature[j][i] = sqrt(sqrSum/(SAMPLE)winSize);
+					//this->get_feature()[j][i] = sqrt(sqrSum / (SAMPLE)winSize);
+					this->set_feature(i, j, sqrt(sqrSum / (SAMPLE)winSize));
 				}
 			}
-			return feature;
+			return this->get_feature();
 		}
