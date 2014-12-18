@@ -32,7 +32,7 @@ SAMPLE** FeatureSpectralPeak::calculate_feature(){
 
 	// set and get nCols and nRows
 	set_nCols(1);
-	set_nRows(ceil(bufSize / hopSize));
+	set_nRows((int)ceil(bufSize / hopSize));
 	int nCols = get_nCols();
 	int nRows = get_nRows();
 
@@ -51,10 +51,11 @@ SAMPLE** FeatureSpectralPeak::calculate_feature(){
 		SAMPLE maxVal = *std::max_element(oneRow, oneRow + rowLen);
 
 		// compute the distance
-		maxIdx = *std::distance(oneRow[0], maxVal);
+		maxIdx = 0;//TODO chage later
+		//maxIdx = *std::distance(oneRow[0], maxVal);
 		
 		// get the freq value
-		feature[i][0] = maxIdx*fBinSize;
+		//feature[i][0] = maxIdx*fBinSize;
 	}
 
 	return feature;

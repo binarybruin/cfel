@@ -37,7 +37,7 @@ SAMPLE** FeatureSpectralFlux::calculate_feature(){
 	SAMPLE** feature = this->get_feature();
 	
 	// check input spectrum is same size as last spectrum
-	static vector<SAMPLE> past;
+	/*static vector<SAMPLE> past;
 
 	if (past.size() != sig_length) {
 		if (past.size() == 0) {
@@ -62,7 +62,7 @@ SAMPLE** FeatureSpectralFlux::calculate_feature(){
 
 	//return EuclidDist::euclidDist(&specFlux[0], nSize);
 
-	//this->set_signal(EuclidDist::euclidDist(&specFlux[0], sig_length));		// TODO: SAMPLE INCOMPATIBLE WITH TYPE FLOAT?
+	//this->set_signal(EuclidDist::euclidDist(&specFlux[0], sig_length));		// TODO: SAMPLE INCOMPATIBLE WITH TYPE FLOAT?*/
 
 	return feature;
 }

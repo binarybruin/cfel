@@ -20,10 +20,23 @@
 #include "Utils/WindowFunction.h"
 #include "Utils/FFT.h"
 
-class FeatureExtractionSpectral: public FeatureExtraction
+class FeatureExtractionSpectral
 {
 
     private:
+		// input parameters
+		SAMPLE*			m_signal;
+		int				m_bufSize;
+		int				m_fs;
+		int				m_winSize;
+		int				m_hopSize;
+
+		// output parameters
+		SAMPLE**		m_feature;
+		int				m_nRows;
+		int				m_nCols;
+
+		// spectral
         WindowType m_winType;
 		SAMPLE m_fBinSize;
         SAMPLE** m_magSpec;
@@ -33,6 +46,32 @@ class FeatureExtractionSpectral: public FeatureExtraction
         FeatureExtractionSpectral(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize, WindowType winType);
         ~FeatureExtractionSpectral();
 
+		// feature extraction getters/setters
+		SAMPLE*			get_signal();
+		void			set_signal(SAMPLE* signal);
+		int				get_bufSize();
+		void			set_bufSize(int bufSize);
+		int				get_fs();
+		void			set_fs(int fs);
+		int				get_winSize();
+		void			set_winSize(int winSize);
+		int				get_hopSize();
+		void			set_hopSize(int hopSize);
+
+
+
+		int				get_nRows();
+		void			set_nRows(int nRows);
+		int				get_nCols();
+		void			set_nCols(int nCols);
+		void			new_feature(int nRows, int nCols);
+		SAMPLE**		get_feature();
+
+		virtual SAMPLE**	calculate_feature();
+
+		virtual void	preprocess();
+
+		// spectral
         WindowType get_winType();
         void set_winType(WindowType winType);
 		

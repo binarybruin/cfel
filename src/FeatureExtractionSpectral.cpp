@@ -16,13 +16,13 @@
 #include "FeatureExtractionSpectral.h"
 
 FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize, WindowType winType)
-	:FeatureExtraction::FeatureExtraction(signal, bufSize, fs, winSize, hopSize){
-
+{
 	set_signal(signal);
 	set_bufSize(bufSize);
 	set_fs(fs);
 	set_winSize(winSize);
 	set_hopSize(hopSize);
+
 	set_winType(winType);
 	calculate_fBinSize();
 	calculate_magSpec();
@@ -86,7 +86,7 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 	WindowType winType = this->get_winType();
 	
 	// TODO: set row elsewhere?
-	set_nRows(ceil(bufSize/(double)hopSize)); 
+	set_nRows((int)ceil(bufSize/(double)hopSize)); 
 	int nRows = this->get_nRows();
 
 	int nFFTCols = (winSize / 2) + 1;
@@ -122,3 +122,98 @@ void FeatureExtractionSpectral::calculate_magSpec(){
 	}
 }
 
+// getters and setters
+
+SAMPLE* FeatureExtractionSpectral::get_signal(){
+	if (this->m_signal == NULL){
+		printf("m_signal is null\n");
+		exit(1);
+	}
+	else{
+		return this->m_signal;
+	}
+}
+
+void FeatureExtractionSpectral::set_signal(SAMPLE* signal){
+	if (signal == NULL){
+		printf("input signal is null\n");
+		return;
+	}
+	else{
+		int bufSize = get_bufSize();
+		this->m_signal = (SAMPLE*)malloc(sizeof(SAMPLE)*bufSize);
+		this->m_signal = signal;
+	}
+}
+
+int FeatureExtractionSpectral::get_bufSize(){
+	return this->m_bufSize;
+}
+
+void FeatureExtractionSpectral::set_bufSize(int bufSize){
+	this->m_bufSize = bufSize;
+}
+
+int FeatureExtractionSpectral::get_fs(){
+	return this->m_fs;
+}
+
+void FeatureExtractionSpectral::set_fs(int fs){
+	this->m_fs = fs;
+}
+
+int FeatureExtractionSpectral::get_winSize(){
+	return this->m_winSize;
+}
+
+void FeatureExtractionSpectral::set_winSize(int winSize){
+	this->m_winSize = winSize;
+}
+
+int FeatureExtractionSpectral::get_hopSize(){
+	return this->m_hopSize;
+}
+
+void FeatureExtractionSpectral::set_hopSize(int hopSize){
+	this->m_hopSize = hopSize;
+}
+
+// feature computation
+
+int FeatureExtractionSpectral::get_nRows(){
+	return this->m_nRows;
+}
+
+void FeatureExtractionSpectral::set_nRows(int nRows){
+	this->m_nRows = nRows;
+}
+
+int FeatureExtractionSpectral::get_nCols(){
+	return this->m_nCols;
+}
+
+void FeatureExtractionSpectral::set_nCols(int nCols){
+	this->m_nCols = nCols;
+}
+
+
+SAMPLE** FeatureExtractionSpectral::get_feature(){
+	return this->m_feature;
+}
+
+void FeatureExtractionSpectral::new_feature(int nRows, int nCols){
+	m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE*));
+	for (int i = 0; i < nCols; ++i){
+		m_feature[i] = (SAMPLE*)malloc(nCols*sizeof(SAMPLE));
+	}
+}
+
+SAMPLE** FeatureExtractionSpectral::calculate_feature(){
+	return m_feature;
+}
+
+// preprocess
+
+void FeatureExtractionSpectral::preprocess(){
+	return;
+}
