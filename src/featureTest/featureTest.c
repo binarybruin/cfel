@@ -15,10 +15,10 @@
     float RMSBuf[BUFFER_SIZE*100]; // is this the correct size ?
     char sineFile[] = "featureTest.txt";
     char RMSFile[] = "RMSTest.txt";
-    char ZCRFile[] = "ZCRTest.txt";
+    //char ZCRFile[] = "ZCRTest.txt";
 
     void featureRMSTest(float buffer[BUFFER_SIZE*100], char fTestfilename[], FILE* fileptr);
-    void featureZCRTest(float buffer[BUFFER_SIZE*100], char fTestfilename[], FILE* fileptr);
+    //void featureZCRTest(float buffer[BUFFER_SIZE*100], char fTestfilename[], FILE* fileptr);
 
 int main(){
 
@@ -38,11 +38,11 @@ int main(){
   }
 
    // try to open ZCR output file
-  FILE * zcrptr = fopen(ZCRFile, "w");
-  if (zcrptr == NULL) {
-    printf("Could not open %s for writing.\n", ZCRFile);
-    return EXIT_FAILURE;
-  }
+  //FILE * zcrptr = fopen(ZCRFile, "w");
+ // if (zcrptr == NULL) {
+  //  printf("Could not open %s for writing.\n", ZCRFile);
+ //   return EXIT_FAILURE;
+ // }
 
 
     // sine wave parameters:
@@ -61,12 +61,12 @@ int main(){
 
 
     //test features
-    featureRMSTest(sineBuf, RMSFile, rmsptr);
-    featureZCRTest(sineBuf, ZCRFile, zcrptr);
+   // featureRMSTest(sineBuf, RMSFile, rmsptr);
+    //featureZCRTest(sineBuf, ZCRFile, zcrptr);
 
     fclose(sineptr);
     fclose(rmsptr);
-    fclose(zcrptr);
+   // fclose(zcrptr);
 
     return EXIT_SUCCESS;
 }
@@ -79,67 +79,56 @@ int main(){
 
 
 /* ROOT MEAN SQUARE */
-void featureRMSTest(float buffer[BUFFER_SIZE*100], char fTestfilename[], FILE* fileptr){
+//void featureRMSTest(float buffer[BUFFER_SIZE*100], char fTestfilename[], FILE* fileptr){
 
 /* Parameter initialization */
-int m_bufSize = BUFFER_SIZE*100;
-int m_winSize = m_bufSize/6;
-int m_hopSize = m_winSize/2;
-int m_nRows;
-float **m_feature;
-float *m_signal = buffer;
+//int m_bufSize = BUFFER_SIZE*100;
+//int m_winSize = m_bufSize/6;
+//int m_hopSize = m_winSize/2;
+//int m_nRows;
+//float **m_feature;
+//float *m_signal = buffer;
 
-/* copy and pasted from FeatureRMS.cpp */
+/* copy and pasted from FeatureRMS.cpp 
 
             int m_nCols = 1;
-            m_nRows = ceil(m_bufSize/m_hopSize);
+            m_nRows = ceil(m_bufSize/(double)m_hopSize);
 
             // allocate memory for feature
-            m_feature = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*)); // CORRECTION: m_feautre -> m_feature
+			m_feature = (SAMPLE**)malloc(m_nRows*sizeof(SAMPLE*));
 			for (int i = 0; i < m_nCols; ++i){
-				m_feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE*));
+				m_feature[i] = (SAMPLE*)malloc(m_nCols*sizeof(SAMPLE));
 			}
 			
 			// RMS calculation
-			if (m_winSize <= 0){ 
-				printf("Check your winSize.\n");
-				exit(1);                            // CORRECTION: must be lowercase in C, haven't tested C++...
-				
-			}
-			else if (m_winSize > m_bufSize){
-				printf("winSize exceeds bufSize.\n");
-				exit(1);                          // CORRECTION: must be lowercase
-			}
-			else{
-				SAMPLE sqrSum = 0.0; // CORRECTION: missing ';' at end of line
-				SAMPLE val;
-				for (i = 0; i < m_nCols; ++i){			
-					for (int j = 0; j < m_nRows; ++j){ 
-						for (int k = 0; k < m_winSize; ++k){
-							if (j*m_hopSize+k >= m_nCols){
-								val = 0;
-							}
-							else{
-								val = m_signal[j*m_hopSize+k];
-							}
-							sqrSum += val*val; 
-							
+			SAMPLE sqrSum;
+			SAMPLE val;
+			for (int i = 0; i < m_nCols; ++i){			
+				for (int j = 0; j < m_nRows; ++j){
+					sqrSum = 0.0;
+					for (int k = 0; k < m_winSize; ++k){
+						if (j*m_hopSize+k >= m_bufSize){ // conceptually zero-padding
+							val = 0;
 						}
-					} 
-					m_feature[j][i] = sqrt(sqrSum/(SAMPLE)m_winSize);
-					fprintf(fileptr, "m_feature[%d][%d] = %f\n", j, i, m_feature[j][i]); //ADDED FOR PRINTOUT of m_feature
+						else{
+							val = buffer[j*m_hopSize+k];
+						}
+						sqrSum += val*val;
+					}
+					m_feature[i][j] = sqrt(sqrSum/(SAMPLE)m_winSize);
+					fprintf(fileptr, "m_feature[%d][%d] = %f\n", j, i, m_feature[i][j]); //ADDED FOR PRINTOUT of m_feature
 				}
 			}
-}
+		}
 
 
 
+ ZERO CROSSING RATE */
 
-
-/* ZERO CROSSING RATE */
+/*
 void featureZCRTest(float buffer[BUFFER_SIZE*100], char fTestfilename[], FILE* fileptr){
 
-/* Parameter initialization */
+ Parameter initialization 
 int m_bufSize = BUFFER_SIZE*100;
 int m_winSize = m_bufSize/6;
 int m_hopSize = m_winSize/2;
@@ -147,7 +136,7 @@ int m_nRows;
 float **m_feature;
 float *m_signal = buffer;
 
-/* copy and pasted from FeatureRMS.cpp */
+ copy and pasted from FeatureRMS.cpp 
 
             int m_nCols = 1;
             m_nRows = ceil(m_bufSize/m_hopSize);
@@ -188,4 +177,4 @@ float *m_signal = buffer;
 					}
 				}	 
 			}
-}
+}*/
