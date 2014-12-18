@@ -15,7 +15,9 @@
 
 #include "FeatureExtractionSpectral.h"
 
-FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize, WindowType winType){
+FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize, WindowType winType)
+	:FeatureExtraction::FeatureExtraction(signal, bufSize, fs, winSize, hopSize){
+
 	set_signal(signal);
 	set_bufSize(bufSize);
 	set_fs(fs);
@@ -24,6 +26,7 @@ FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize
 	set_winType(winType);
 	calculate_fBinSize();
 	calculate_magSpec();
+
 }
 
 FeatureExtractionSpectral::~FeatureExtractionSpectral(){
