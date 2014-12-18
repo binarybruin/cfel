@@ -18,9 +18,7 @@
 #include <iostream>
 #include <fstream>
 
-using namespace FeatureExtraction::Utils;
-
-void FeatureSpectralFlux::calculate_feature(){
+SAMPLE** FeatureSpectralFlux::calculate_feature(){
 
 	SAMPLE* signal = this->get_signal();
 	int sig_length = this->get_bufSize();
@@ -28,15 +26,15 @@ void FeatureSpectralFlux::calculate_feature(){
 	
 	// set and get nCols and nRows
 	set_nCols(1);
-	set_nRows(ceil(bufSize/hopSize);
-	nCols = get_nCols();
-	nRows = get_nRows();
+	int bufSize = this->get_bufSize();
+	int hopSize = this->get_hopSize();
+	set_nRows(ceil(bufSize/(double)hopSize));
+	int nCols = get_nCols();
+	int nRows = get_nRows();
 	
 	//memory allocation for feature
-	m_feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
-	for (int i = 0; i < nCols; ++i){
-		m_feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
-	}
+	this->new_feature(nRows, nCols);
+	SAMPLE** feature = this->get_feature();
 	
 	// check input spectrum is same size as last spectrum
 	static vector<SAMPLE> past;
@@ -47,23 +45,24 @@ void FeatureSpectralFlux::calculate_feature(){
 		}
 		else {
 			// TODO: Should throw error here
-			return;
+			return feature;
 		}
 	}
 
 	// get magnitude spectrum
-	FeatureExtractionSpectral *spectral = new FeatureExtractionSpectral();		// TODO: BUT WHERE DOES THIS GET INITIALIZED? --> in constructor
-	SAMPLE** pMagSpec = spectral->get_magSpec();
+	SAMPLE** pMagSpec = this->get_magSpec();
 
 	// calculate spectral flux of magnitude spectrum
 	vector<SAMPLE> specFlux(nRows);
 
 	for (int i = 0; i < nRows; i++)
-		specFlux[i] = fabs(pMagSpec[i] - past[i]);		// TODO: WHERE IS PAST INITIALIZED?
+		//specFlux[i] = fabs(pMagSpec[i] - past[i]);		// TODO: WHERE IS PAST INITIALIZED?
 
 	past.assign(pMagSpec, pMagSpec + sig_length);
 
 	//return EuclidDist::euclidDist(&specFlux[0], nSize);
 
-	this->set_signal(EuclidDist::euclidDist(&specFlux[0], sig_length));		// TODO: SAMPLE INCOMPATIBLE WITH TYPE FLOAT?
+	//this->set_signal(EuclidDist::euclidDist(&specFlux[0], sig_length));		// TODO: SAMPLE INCOMPATIBLE WITH TYPE FLOAT?
+
+	return feature;
 }

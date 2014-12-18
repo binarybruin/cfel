@@ -7,13 +7,7 @@
 
 using namespace std;
 
-namespace FeatureExtraction {
-namespace Utils {
-
 class FFT {
 public:
 	static vector<complex<SAMPLE> > fft(vector<complex<SAMPLE> > x);
 };
-
-}
-}

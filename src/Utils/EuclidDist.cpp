@@ -1,10 +1,7 @@
 #include "EuclidDist.h"
 #include <math.h>
 
-namespace FeatureExtraction {
-namespace Utils {
-
-	SAMPLE EuclidDist::euclidDist(SAMPLE* pVec, int nSize) {
+SAMPLE EuclidDist::euclidDist(SAMPLE* pVec, int nSize) {
 
 	double fSum = 0.0;
 
@@ -14,5 +11,3 @@ namespace Utils {
 	return (SAMPLE)sqrt(fSum);
 }
 
-}
-}

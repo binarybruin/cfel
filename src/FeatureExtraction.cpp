@@ -14,8 +14,7 @@
 // =================================================================== //
 
 #include "FeatureExtraction.h"
-
-using namespace FeatureExtraction;
+#include <stdlib.h>
 
 // constructor/deconstructor
 
@@ -25,7 +24,7 @@ FeatureExtraction::FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int wi
 	set_fs(fs);
 	set_winSize(winSize);
 	set_hopSize(hopSize);
-	calculate_feature();
+	//calculate_feature();
 } 
 
 FeatureExtraction::~FeatureExtraction(){
@@ -119,13 +118,20 @@ SAMPLE** FeatureExtraction::get_feature(){
 	return this->m_feature;
 }
 
-void virtual FeatureExtraction::calculate_feature(){
-	return;
+void FeatureExtraction::new_feature(int nRows, int nCols){
+	m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE*));
+	for (int i = 0; i < nCols; ++i){
+		m_feature[i] = (SAMPLE*)malloc(nCols*sizeof(SAMPLE));
+	}
+}
+
+SAMPLE** FeatureExtraction::calculate_feature(){
+	return m_feature;
 }
 
 // preprocess
 
-virtual void preprocess(){
+void FeatureExtraction::preprocess(){
 	return;
 }
 

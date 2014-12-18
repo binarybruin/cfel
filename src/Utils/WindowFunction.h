@@ -1,4 +1,4 @@
-#include "FeatureExtraction.h"
+#include "../FeatureExtraction.h"
 
 enum WindowType {
 	WINDOW_TYPE_RECTANGULAR = 0,

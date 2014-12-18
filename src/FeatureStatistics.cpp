@@ -14,12 +14,13 @@
 // =================================================================== //
 
 #include "FeatureStatistics.h"
+#include "FeatureExtraction.h"
 #include <stdlib.h>
 
 // constructor/deconstructor
 FeatureStatistics::FeatureStatistics(FeatureExtraction* featureObject, int sWinSize, int sHopSize){
 	
-	set_featureObject(FeatureExtraction* featureObject);
+	set_featureObject(featureObject);
 	
 	
 	set_sWinSize(sWinSize);
@@ -27,14 +28,14 @@ FeatureStatistics::FeatureStatistics(FeatureExtraction* featureObject, int sWinS
 	calculate_nStatCols(); // no input; computed from nCols
 	calculate_nStatRows(); // no input; computed from nRows and sHopSize
 	
-	set_features();
+	set_d0features();
 	set_d1Features();
 	set_d2Features();
 }
 
 FeatureStatistics::~FeatureStatistics(){
 	
-	int nStatCols = this->get_nStatRows();
+	int nStatRows = this->get_nStatRows();
 	
 	// free mean
 	if (m_mean != NULL){
@@ -65,7 +66,7 @@ FeatureStatistics::~FeatureStatistics(){
 		for (int i = 0; i < nRows; ++i){
 			free(m_d1Feature[i]); 
 		}
-		free(m_d1Freature);
+		free(m_d1Feature);
 	}
 	// free d1Mean
 	if (m_d1Mean != NULL){
@@ -91,10 +92,10 @@ FeatureStatistics::~FeatureStatistics(){
 	
 	// free d2Feature
 	if (m_d2Feature != NULL){
-		for (int i = 0; i < nrows; ++i){
+		for (int i = 0; i < nRows; ++i){
 			free(m_d2Feature[i]); 
 		}
-		free(m_d2Freature);
+		free(m_d2Feature);
 	}
 	// free d2Mean
 	if (m_d2Mean != NULL){
@@ -119,11 +120,11 @@ FeatureStatistics::~FeatureStatistics(){
 	}
 }
 
-FeatureExtraction* 	get_featureObject(){
+FeatureExtraction* 	FeatureStatistics::get_featureObject(){
 	return m_featureObject;
 }
 
-void set_featureObject(FeatureExtraction* featureObject){
+void FeatureStatistics::set_featureObject(FeatureExtraction* featureObject){
 	m_featureObject = featureObject;
 }
 
@@ -141,7 +142,7 @@ int FeatureStatistics::get_nStatCols(){
 	return m_nStatCols;
 }
 
-void FeatureStatistics::calculate_nStatRows(){
+void FeatureStatistics::calculate_nStatCols(){
 	int nCols = this->get_featureObject()->get_nCols(); 
 	this->m_nStatCols = nCols;
 }
@@ -190,8 +191,8 @@ void FeatureStatistics::set_d0features(){
 	}
 	
 	// calculate feature variables
-	SAMPLE** feature = this->get_featureObject()->get_feature()
-	m_mean = calcualte_mean(feature);
+	SAMPLE** feature = this->get_featureObject()->get_feature();
+	m_mean = calculate_mean(feature);
 	m_var = calculate_var(feature, m_mean);
 	m_std =calculate_var2std(m_var);
 }
@@ -215,10 +216,14 @@ SAMPLE** FeatureStatistics::get_d1Var(){
 }
 
 void FeatureStatistics::set_d1Features(){
+
+	int nCols = this->get_featureObject()->get_nCols();
+	int nRows = this->get_featureObject()->get_nRows();
+
 	// memory allocation
-	m_d1Feature = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
-	for (int i = 0; i < m_nCols; ++i){
-		m_d1Feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE));
+	m_d1Feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
+	for (int i = 0; i < nCols; ++i){
+		m_d1Feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE));
 	}
 	m_d1Mean = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
 	for (int i = 0; i < m_nStatCols; ++i){
@@ -234,9 +239,9 @@ void FeatureStatistics::set_d1Features(){
 	}
 	
 	// calculate d1 feature variables
-	SAMPLE** feature = this->get_featureObject()->get_feature()
+	SAMPLE** feature = this->get_featureObject()->get_feature();
 	m_d1Feature = calculate_delta(feature);
-	m_d1Mean = calcualte_mean(m_d1Feature);
+	m_d1Mean = calculate_mean(m_d1Feature);
 	m_d1Var = calculate_var(m_d1Feature, m_d1Mean);
 	m_d1Std = calculate_var2std(m_d1Var);
 }
@@ -260,10 +265,14 @@ SAMPLE** FeatureStatistics::get_d2Var(){
 
 
 void FeatureStatistics::set_d2Features(){
+
+	int nCols = this->get_featureObject()->get_nCols();
+	int nRows = this->get_featureObject()->get_nRows();
+
 	// memory allocation
-	m_d2Feature = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
-	for (int i = 0; i < m_nCols; ++i){
-		m_d2Feature[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE));
+	m_d2Feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
+	for (int i = 0; i < nCols; ++i){
+		m_d2Feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE));
 	}
 	m_d2Mean = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
 	for (int i = 0; i < m_nStatCols; ++i){
@@ -281,7 +290,7 @@ void FeatureStatistics::set_d2Features(){
 	// calculate
 	SAMPLE** feature = this->get_d1Feature();
 	m_d2Feature = calculate_delta(feature);
-	m_d2Mean = calcualte_mean(m_d2Feature);
+	m_d2Mean = calculate_mean(m_d2Feature);
 	m_d2Var = calculate_var(m_d2Feature, m_d2Mean);
 	m_d2Std = calculate_var2std(m_d2Var);
 }
@@ -295,19 +304,20 @@ SAMPLE** FeatureStatistics::calculate_mean(SAMPLE** feature){
 	}
 	
 	// memory allocation
-	SAMPLE** retVal  = (SAMPLE**)malloc(nStatCols*sizeof(SAMPLE*));
-	for (int i = 0; i < nStatCols; ++i){
-        retVal[i] = (SAMPLE*)malloc(nStatRows*sizeof(SAMPLE));
+	SAMPLE** retVal = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
+	for (int i = 0; i < m_nStatCols; ++i){
+		retVal[i] = (SAMPLE*)malloc(m_nStatRows*sizeof(SAMPLE));
     }
 	
 	//take column by column to compute mean within each hopping window	
 	SAMPLE sum;
 	SAMPLE val;
+	int nRows = this->get_featureObject()->get_nRows();
 	for (int i = 0; i < m_nStatCols; ++i){
 		for (int j = 0; j < m_nStatRows; ++j){
 		    sum = 0;
-			for (int k = 0; k < m_sWinSIze; ++k){
-			    if (j*m_sHopSize+k >= m_nRows){ 
+			for (int k = 0; k < m_sWinSize; ++k){
+				if (j*m_sHopSize + k >= nRows){
 					val = 0;
                 }
 				else{
@@ -315,7 +325,7 @@ SAMPLE** FeatureStatistics::calculate_mean(SAMPLE** feature){
 				}
                 sum += val;
             }
-            retVal[j][i] = sum/m_sWinSIze;
+            retVal[j][i] = sum/m_sWinSize;
         }
     }
     return retVal;
@@ -330,20 +340,21 @@ SAMPLE** FeatureStatistics::calculate_var(SAMPLE** feature, SAMPLE** mean){
 	}
 	
 	// memory allocation
-	SAMPLE** retVal  = (SAMPLE**)malloc(nStatCols*sizeof(SAMPLE*));
-	for (int i = 0; i < nStatCols; ++i){
-        retVal[i] = (SAMPLE*)malloc(nStatRows*sizeof(SAMPLE));
+	SAMPLE** retVal  = (SAMPLE**)malloc(m_nStatCols*sizeof(SAMPLE*));
+	for (int i = 0; i < m_nStatCols; ++i){
+        retVal[i] = (SAMPLE*)malloc(m_nStatRows*sizeof(SAMPLE));
     }
 	
 	// variance calculation
 	SAMPLE sqrSum;
 	SAMPLE dif;
 	SAMPLE val;
+	int nRows = this->get_featureObject()->get_nRows();
 	for (int i = 0; i < m_nStatCols; ++i){
 		for (int j = 0; j < m_nStatRows; ++j){
-		    sum = 0;
-			for (int k = 0; k < m_sWinSIze; ++k){
-			    if (j*m_sHopSize+k >= m_nRows){ // zero-padding
+		    sqrSum = 0;
+			for (int k = 0; k < m_sWinSize; ++k){
+			    if (j*m_sHopSize+k >= nRows){ // zero-padding
                     val = 0;
                 }
 				else{
@@ -352,7 +363,7 @@ SAMPLE** FeatureStatistics::calculate_var(SAMPLE** feature, SAMPLE** mean){
                 dif = val-mean[j][i];
 				sqrSum += dif*dif;
             }
-            retVal[j][i] = sqrSum/(m_sWinSIze-1);
+            retVal[j][i] = sqrSum/(m_sWinSize-1);
         }
     }
     return retVal;
@@ -389,19 +400,22 @@ SAMPLE** FeatureStatistics::calculate_delta(SAMPLE** feature){
 		exit(1);
 	}
 
+	int nCols = this->get_featureObject()->get_nCols();
+	int nRows = this->get_featureObject()->get_nRows();
+
 	// memory allocation
-	SAMPLE** retVal  = (SAMPLE**)malloc(m_nCols*sizeof(SAMPLE*));
+	SAMPLE** retVal  = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
 	for (int i = 0; i < m_nStatCols; ++i){
-        retVal[i] = (SAMPLE*)malloc(m_nRows*sizeof(SAMPLE));
+        retVal[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE));
     }
 	
 	// difference calculation
 	SAMPLE curr;
 	SAMPLE next;
-	for (int i = 0; i < m_nCols; ++i){
-		for (int j = 0; j < m_nRows; ++j){
+	for (int i = 0; i < nCols; ++i){
+		for (int j = 0; j < nRows; ++j){
 			curr = feature[j][i];
-			if (j+1 < m_nRows){
+			if (j+1 < nRows){
 				next = feature[j+1][i];
 			}
 			else{

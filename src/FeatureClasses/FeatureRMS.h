@@ -13,8 +13,10 @@
 //
 // =================================================================== //
 
+#include "../FeatureExtraction.h"
+
 class FeatureRMS: public FeatureExtraction
 {
 	public:
-		void calculate_feature();
-}
+		SAMPLE** calculate_feature();
+};

@@ -18,9 +18,9 @@
 #include <iostream>
 #include <fstream>
 
-using namespace FeatureExtraction::Utils;
+//using namespace FeatureExtraction::Utils;
 
-void FeatureZCR::calculate_feature(){
+SAMPLE** FeatureZCR::calculate_feature(){
 			int bufSize = this->get_bufSize();
 			int hopSize = this->get_hopSize();
 			int winSize = this->get_winSize();
@@ -33,10 +33,8 @@ void FeatureZCR::calculate_feature(){
 			int nRows = get_nRows();
 			
 			// allocate memory for feature
-			this->m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE));
-			for (int i = 0; i < nRows; ++i){
-				m_feature[i] = (SAMPLE*)malloc(nCols*sizeof(SAMPLE*));
-			}
+			this->new_feature(nRows, nCols);
+			SAMPLE** feature = this->get_feature();
 			
 			// ZCR calculation
 			int zcc; // zero crossing count
@@ -54,7 +52,8 @@ void FeatureZCR::calculate_feature(){
 							}
 						}
 					}
-					m_feature[j][i] = (SAMPLE)zcc/winSize;
+					feature[j][i] = (SAMPLE)zcc/winSize;
 				}
 			}	 
+			return feature;
 		}

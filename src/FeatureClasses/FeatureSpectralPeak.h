@@ -23,11 +23,11 @@
 #include "../FeatureExtractionSpectral.h"
 #include "../Utils/EuclidDist.h"
 
-class FeatureSpectralFlux: public FeatureExtraction {
+class FeatureSpectralPeak: public FeatureExtractionSpectral {
 
 public:
 	
-	void calculate_feature();
+	SAMPLE** calculate_feature();
 
 };
 

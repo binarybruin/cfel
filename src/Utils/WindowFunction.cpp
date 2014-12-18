@@ -1,9 +1,13 @@
 #include "WindowFunction.h"
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
 
 using namespace std;
 
+#ifndef M_PI
+#    define M_PI 3.14159265358979323846
+#endif
 
 // Constructors/destructors
 WindowFunction::WindowFunction(int winSize) {

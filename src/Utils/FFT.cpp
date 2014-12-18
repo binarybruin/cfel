@@ -1,10 +1,10 @@
 #include "FFT.h"
 #include <math.h>
 
-using namespace std;
+#ifndef M_PI
+#    define M_PI 3.14159265358979323846
+#endif
 
-namespace FeatureExtraction {
-namespace Utils {
 
 // compute the FFT of x, assuming its length is a power of 2
 vector<complex<SAMPLE> > FFT::fft(vector<complex<SAMPLE> > x) {
@@ -40,7 +40,4 @@ vector<complex<SAMPLE> > FFT::fft(vector<complex<SAMPLE> > x) {
 		y[k + N/2] = q[k] - wk*r[k];
 	}
 	return y; // COMMENT: fft output size is just half the size, not half +1
-}
-
-}
 }

@@ -13,10 +13,13 @@
 //
 // =================================================================== //
 
+#include "../FeatureExtraction.h"
+#include "../FeatureExtractionSpectral.h"
+
 class FeatureSpectralCentroid: public FeatureExtractionSpectral
 {
 	public:
-		void calculate_feature();
-}
+		SAMPLE** calculate_feature();
+};
 
 

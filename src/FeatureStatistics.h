@@ -28,8 +28,6 @@ class FeatureStatistics
 		FeatureExtraction* m_featureObject;
 		int 			m_sWinSize; // statistics winSize
 		int 			m_sHopSize; // statistics hopSize
-		int				m_nStatRows;
-		int				m_nStatCols;
 		
 		// output parameters
 		int 			m_nStatRows;
@@ -62,7 +60,7 @@ class FeatureStatistics
 		int 			get_nStatRows();
 		void 			calculate_nStatRows();
 		int 			get_nStatCols();
-		void 			calculaate_nStatCols();
+		void 			calculate_nStatCols();
 		 
 		SAMPLE** 		get_mean();
 		SAMPLE** 		get_std();

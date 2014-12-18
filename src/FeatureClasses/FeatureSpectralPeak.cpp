@@ -13,15 +13,15 @@
 //
 // =================================================================== //
 
-#include "FeatureSpectralFlux.h"
+#include "FeatureSpectralPeak.h"
 
 #include <iostream>
 #include <fstream>
-#include <alogrithm>
+#include <algorithm>
 
-using namespace FeatureExtraction::Utils;
+//using namespace FeatureExtraction::Utils;
 
-void FeatureSpectralPeak::calculate_feature(){
+SAMPLE** FeatureSpectralPeak::calculate_feature(){
 	
 	int fs = this->get_fs();
 	SAMPLE* signal = this->get_signal();
@@ -32,15 +32,13 @@ void FeatureSpectralPeak::calculate_feature(){
 
 	// set and get nCols and nRows
 	set_nCols(1);
-	set_nRows(ceil(bufSize / hopSize);
+	set_nRows(ceil(bufSize / hopSize));
 	int nCols = get_nCols();
 	int nRows = get_nRows();
 
 	// allocate memory for feature
-	this->m_feature = (SAMPLE**)malloc(nCols*sizeof(SAMPLE*));
-	for (int i = 0; i < nCols; ++i){
-		m_feature[i] = (SAMPLE*)malloc(nRows*sizeof(SAMPLE*));
-	}
+	this->new_feature(nRows, nCols);
+	SAMPLE** feature = this->get_feature();
 
 	// get magnitude spectrum
 	SAMPLE** magSpec = this->get_magSpec();
@@ -48,14 +46,16 @@ void FeatureSpectralPeak::calculate_feature(){
 	int maxIdx;
 	for (int i = 0; i < nRows; i++){
 		// take one entire row and its value
-		oneRow = m_feature[i];
+		oneRow = magSpec[i];
 		int rowLen = sizeof(oneRow)/ sizeof(SAMPLE);
 		SAMPLE maxVal = *std::max_element(oneRow, oneRow + rowLen);
 
 		// compute the distance
-		maxIdx = *std::distance(oneRow, maxVal);
+		maxIdx = *std::distance(oneRow[0], maxVal);
 		
 		// get the freq value
-		m_feature[i][0] = maxIdx*fBinSize;
+		feature[i][0] = maxIdx*fBinSize;
 	}
+
+	return feature;
 }

@@ -18,9 +18,7 @@
 #include <iostream>
 #include <fstream>
 
-using namespace FeatureRMS::Utils;
-
-void FeatureRMS::calculate_feature(){
+SAMPLE** FeatureRMS::calculate_feature(){
 			int bufSize = this->get_bufSize();
 			int hopSize = this->get_hopSize();
 			int winSize = this->get_winSize();
@@ -33,10 +31,8 @@ void FeatureRMS::calculate_feature(){
 			int nRows = get_nRows();
 			
 			// allocate memory for feature
-			this->m_feature = (SAMPLE**)malloc(nRows*sizeof(SAMPLE*));
-			for (int i = 0; i < nCols; ++i){
-				m_feature[i] = (SAMPLE*)malloc(nCols*sizeof(SAMPLE));
-			}
+			this->new_feature(nRows, nCols);
+			SAMPLE** feature = this->get_feature();
 			
 			// RMS calculation
 			SAMPLE sqrSum;
@@ -53,7 +49,8 @@ void FeatureRMS::calculate_feature(){
 						}
 						sqrSum += val*val;
 					}
-					m_feature[j][i] = sqrt(sqrSum/(SAMPLE)winSize);
+					feature[j][i] = sqrt(sqrSum/(SAMPLE)winSize);
 				}
 			}
+			return feature;
 		}

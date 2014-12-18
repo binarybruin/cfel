@@ -29,14 +29,17 @@ FeatureExtractionSpectral::FeatureExtractionSpectral(SAMPLE* signal, int bufSize
 FeatureExtractionSpectral::~FeatureExtractionSpectral(){
 	int winSize = this->get_winSize();
 	int nCols = this->get_nCols();
+
+	SAMPLE* signal = this->get_signal();
+	SAMPLE** feature = this->get_feature();
 	
-	if (m_signal != NULL){
-		free(m_signal);
+	if (signal != NULL){
+		free(signal);
 	}
 	
-	if (m_feature != NULL){
+	if (feature != NULL){
 		for (int i = 0; i < nCols; ++i){
-			free(m_feature[i]);
+			free(feature[i]);
 		}
 	}
 	
