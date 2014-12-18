@@ -18,5 +18,6 @@
 class FeatureRMS: public FeatureExtraction
 {
 	public:
+		void set_rows_cols();
 		SAMPLE** calculate_feature();
 };

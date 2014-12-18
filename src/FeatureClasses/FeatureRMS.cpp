@@ -18,6 +18,14 @@
 #include <iostream>
 #include <fstream>
 
+void FeatureRMS::set_rows_cols() {
+	int bufSize = this->get_bufSize();
+	int hopSize = this->get_hopSize();
+
+	this->set_nCols(1);
+	this->set_nRows(ceil(bufSize / (double)hopSize));
+}
+
 SAMPLE** FeatureRMS::calculate_feature(){
 			int bufSize = this->get_bufSize();
 			int hopSize = this->get_hopSize();
@@ -25,8 +33,8 @@ SAMPLE** FeatureRMS::calculate_feature(){
 			SAMPLE* buffer = this->get_signal();
 			
 			// set nCols and nRows (move to somewhere else?)
-			set_nCols(1);
-			set_nRows(ceil(bufSize/(double)hopSize));
+			//set_nCols(1);
+			//set_nRows(ceil(bufSize/(double)hopSize));
 			int nCols = get_nCols();
 			int nRows = get_nRows();
 			

@@ -29,6 +29,8 @@ int main() {
 	int t_winSize = featureRMS->get_winSize();
 	std::cout << "winSize: " << t_winSize << std::endl;
 
+	featureRMS->set_rows_cols();
+
 	SAMPLE** result_RMS = featureRMS->calculate_feature();
 
 	int nCols = featureRMS->get_nCols();
@@ -37,12 +39,13 @@ int main() {
 	std::cout << "rows: " << nRows << std::endl;
 
 	for (int i = 0; i < bufSize; i++) {
-		std::cout << featureRMS->get_signal()[i] << std::endl;
+		//std::cout << featureRMS->get_signal()[i] << std::endl;
 	}
 
+	SAMPLE** feature = featureRMS->get_feature();
 	for (int i = 0; i < nCols; i++) {
 		for (int j = 0; j < nRows; j++) {
-			std::cout << featureRMS->get_feature()[i][j] << std::endl;
+			std::cout << feature[j][i] << std::endl;
 		}
 	}
 
