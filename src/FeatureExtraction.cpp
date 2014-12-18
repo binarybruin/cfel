@@ -20,8 +20,8 @@
 // constructor/deconstructor
 
 FeatureExtraction::FeatureExtraction(SAMPLE* signal, int bufSize, int fs, int winSize, int hopSize){
-	set_signal(signal);
 	set_bufSize(bufSize);
+	set_signal(signal);
 	set_fs(fs);
 	set_winSize(winSize);
 	set_hopSize(hopSize);
