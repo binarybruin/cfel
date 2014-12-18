@@ -22,13 +22,13 @@ using namespace std;
 // constructor/deconstructor
 void FeatureController::setFeature(SAMPLE* buffer, int bufSize, int fs, int winSize, int hopSize){
 	
-	this->m_feature = new FeatureExtraction(buffer, bufSize, fs, winSize, hopSize);
+	m_featureRMS = new FeatureRMS::FeatureExtraction(buffer, bufSize, fs, winSize, hopSize);
 
 }
 
-SAMPLE** FeatureController::getFeature() {
+SAMPLE** FeatureController::getRMSFeature() {
 
-	return this->m_feature->get_feature();
+	return this->m_featureRMS->get_feature();
 
 }
 

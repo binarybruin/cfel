@@ -22,10 +22,13 @@
 #include "FeatureExtraction.h"
 #include "FeatureStatistics.h"
 
+#include "FeatureClasses\FeatureRMS.h"
+
 class FeatureController {
 	private:
 		// output parameters
-		FeatureExtraction*	m_feature;		// ***CHANGE TO ARRAY OF FEATURES?
+		//FeatureExtraction*	m_feature;		// ***CHANGE TO ARRAY OF FEATURES?
+		FeatureExtraction*	m_featureRMS;
 		FeatureStatistics	m_featureStatObject;
 		
 		// input parameters from JUCE
@@ -40,7 +43,7 @@ class FeatureController {
 		~FeatureController();
 
 		void setFeature(SAMPLE* buffer, int bufSize, int fs, int winSize, int hopSize);	// create new Feature
-		SAMPLE** getFeature();
+		SAMPLE** getRMSFeature();
 		void exportFeatureData(); // xml
 			
 };
