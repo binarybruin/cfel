@@ -2,7 +2,8 @@
 //  BeaconThread.cpp
 //  BeaconJuce
 //
-//  Created by Elska on 11/17/14.
+//
+//  Michelle Auyoung, Jordan Juras, Jaeseong You
 //
 //
 

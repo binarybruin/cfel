@@ -2,7 +2,8 @@
 //  MainComponent.h
 //  JuceProject
 //
-//  Created by Elska on 11/3/14.
+//
+//  Michelle Auyoung, Jordan Juras, Jaeseong You
 //
 //
 
@@ -15,7 +16,7 @@
 #include "AudioLiveScrollingDisplay.h"
 #include "AudioAnalyzer.h"
 #include "BeaconThread.h"
-//#include "FeatureController.h"
+
 
 
 
@@ -30,9 +31,6 @@ public:
     void buttonClicked(Button* buttonThatWasClicked);
     void fillBrushedAluminiumBackground (Graphics& g);
     
-    
-    //void func();
-    
 private:
     ScopedPointer<Label> label;
     ScopedPointer<TextButton> quitButton;
@@ -40,10 +38,7 @@ private:
     LiveScrollingAudioDisplay liveAudioScroller;
     AudioAnalyzer analyzer;
     
-    //TRY: liveAudioScroller2;
-    LiveScrollingAudioDisplay liveAudioScroller2;
-    
-    BeaconThread *bThread[4];
+    //BeaconThread *bThread[4];
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

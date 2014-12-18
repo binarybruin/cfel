@@ -2,12 +2,9 @@
 //  AudioAnalyzer.cpp
 //  JuceProject
 //
-//  Created by Elska on 11/3/14.
-//
-//
+//  Michelle Auyoung, Jordan Juras, Jaeseong You
 
 #include "AudioAnalyzer.h"
-//#include "FeatureController.h"
 
 
 AudioAnalyzer::AudioAnalyzer()
@@ -35,17 +32,20 @@ AudioAnalyzer::AudioAnalyzer()
 
 void AudioAnalyzer::paint (Graphics& g)
 {
-    float sum = 0.0f;
-    for (int i = 0; i < 1024; i++)
-        sum += samples[i];
+    float sumRMS = 0.0f;
+    float sumZCR = 0.0f;
+    for (int i = 0; i < 1024; i++){
+        sumRMS += samplesRMS[i];
+        sumZCR += samplesZCR[i];
+    }
     
-    //sum /= 1024.0f;
-    String str = String(sum);
+    String strRMS = String(sumRMS);
+    String strZCR = String(sumZCR);
     
     g.fillAll (Colours::black);
     
     textBox.moveCaretToEnd();
-    textBox.insertTextAtCaret ("RMS:EDIT: " + str + newLine);
+    textBox.insertTextAtCaret ("RMS:" + strRMS + "                              " + "ZCR:" + strZCR + newLine);
 }
 
 void AudioAnalyzer::resized()
@@ -62,16 +62,24 @@ bool AudioAnalyzer::getflag()
 
 void AudioAnalyzer::clear()
 {
-    zeromem (samples, sizeof (samples));
+    zeromem (samplesRMS, sizeof (samplesRMS));
+    zeromem (samplesZCR, sizeof (samplesZCR));
     zeromem (saveBuf1, sizeof (saveBuf1)); // ensure the saveBuf is not full of junk, on the first iteration of
-                                            //pushing the buf to featureController
+                                           //pushing the buf to featureController
     zeromem (saveBuf2, sizeof (saveBuf2));
-    accumulator = 0;
+    accumulatorRMS = 0;
+    accumulatorZCR = 0;
     subSample = 0;
     iteration = 0;
     counterBuf = 0;
     flag = false;
-    //SAMPLE** featVal;
+    typedef float SAMPLE;
+    bufSize = 2 * 100 * 1024;
+    winSize = bufSize/60;
+    hopSize = winSize/2;
+    nCols = 1;
+    nRows = ceil(bufSize/hopSize);
+    
 }
 
 void AudioAnalyzer::audioDeviceIOCallback (const float** inputChannelData, int numInputChannels,
@@ -86,9 +94,6 @@ void AudioAnalyzer::audioDeviceIOCallback (const float** inputChannelData, int n
             if (inputChannelData[chan] != nullptr){
                 
                 inputSave[chan] = inputChannelData[chan][i];
-                                
-                //for RMS calc only (ELSKA)
-                inputSample += std::abs (inputChannelData[chan][i]);  // find the sum of all the channels
         
                 pushSample (10.0f * inputSample, inputSave, numInputChannels); // boost the level to make it more easily visible.
                 
@@ -107,7 +112,7 @@ void AudioAnalyzer::audioDeviceIOCallback (const float** inputChannelData, int n
 
 
 
-void AudioAnalyzer::pushSample (const float newSample, const float (&inputSave)[2], int numChannels)
+void AudioAnalyzer::pushSample (const float newSample, double (&inputSave)[2], int numChannels)
 {
     
     counterSave = iteration % (numChannels*100);
@@ -131,50 +136,144 @@ void AudioAnalyzer::pushSample (const float newSample, const float (&inputSave)[
     
     if(counterSave == 0 && bufSelect == 0){
         flag = true;
-        std::cout << "flag1!" << flag;
+        std::cout << "Buffer1::" << std::endl;
         
-        //TO DO: pass the save buff to feature extraction. it will be of size saveBuf[numChannels * 100 * 1024] (i think ?)//
-        //but for now
-        //std::cout << saveBuf1 << saveBuf1[2] << std::endl << iteration << std::endl;
-        //AudioAnalyzer::pushSample is a void return function because all the FeatureFunction calls are pushed to animation within it, but
-        // RMS = featureControler::CalcRMS(saveBuf); RMS will be the value passed to the animation, but the buffer in the    function will save exterior to this function::pushSample
-        //FFT = featureControler::CalcFFT(saveBuf);
-        //NOTE: as stated above OUR FEATURE:Extraction RETURNS MUST SAVE TO A GLOBAL VARIABLE THAT WILL BE ACCESSED BY THE GRAPHICS RENDERING FUNCTION
+        // parameter initialization:
+        SAMPLE m_featureRMS[nCols][nRows];
+        SAMPLE *buffer = saveBuf1;
         
-        // featureControllerObject = new FeatureController( INFO );
-        // featVal = featureControlObject.getFeature(RMS);
-     
-        //set saveBuf to zero
-        for(int i = 0; i < (numChannels*100*1024); ++i){
-            saveBuf1[i] = 0;
+        // RMS calculation
+        SAMPLE sqrSum;
+        SAMPLE val;
+        for (int i = 0; i < nCols; ++i){
+            for (int j = 0; j < nRows; ++j){
+                sqrSum = 0.0;
+                for (int k = 0; k < winSize; ++k){
+                    if (j*hopSize+k >= bufSize){ // conceptually zero-padding
+                        val = 0;
+                    }
+                    else{
+                        val = buffer[j*hopSize+k];
+                    }
+                    sqrSum += val*val;
+                }
+                m_featureRMS[i][j] = sqrt(sqrSum/winSize);
+            }
         }
+        
+        //ZERO CROSSING RATE
+        
+        SAMPLE m_featureZCR[nCols][nRows];
+        int zcc; // zero crossing count
+        for (int i = 0; i < nCols; ++i){
+            for (int j = 0; j < nRows; ++j){
+                zcc = 0;
+                for (int k = 0; k < winSize; ++k){
+                    if (j*hopSize+k+1 < bufSize){ // conceptually zero-padding
+                        // check the sign of two consecutive samples
+                        if (buffer[j*hopSize+k] < 0 && buffer[j*hopSize+k+1] > 0){
+                            ++zcc;
+                        }
+                        if (buffer[j*hopSize+k] > 0 && buffer[j*hopSize+k+1] < 0){
+                            ++zcc;
+                        }
+                    }
+                }
+                m_featureZCR[i][j] = (SAMPLE)zcc/winSize;
+            }
+        }
+
+        sampleRMS = m_featureRMS[0][0];
+        sampleZCR = m_featureZCR[0][0];
+        std::cout << "RMS" << sampleRMS  << std::endl;
+        std::cout << "ZCR" << sampleZCR  << std::endl;
+        
+        //set saveBuf to zero
+        zeromem (saveBuf1, sizeof (saveBuf1));
+        //for(int i = 0; i < (numChannels*100*1024); ++i){
+         //   saveBuf1[i] = 0;
+       // }
     }
     else if(counterSave == 0 && bufSelect == 1){
         flag = false;
-        std::cout << "flag2!" << flag;
+        std::cout << "Buffer2::" << std::endl;
         
-        for(int i = 0; i < (numChannels*100*1024); ++i){
-            saveBuf2[i] = 0;
+        // parameter initialization:
+        SAMPLE m_featureRMS[nCols][nRows];
+        SAMPLE *buffer = saveBuf2;
+        
+        // RMS calculation
+        SAMPLE sqrSum;
+        SAMPLE val;
+        for (int i = 0; i < nCols; ++i){
+            for (int j = 0; j < nRows; ++j){
+                sqrSum = 0.0;
+                for (int k = 0; k < winSize; ++k){
+                    if (j*hopSize+k >= bufSize){ // conceptually zero-padding
+                        val = 0;
+                    }
+                    else{
+                        val = buffer[j*hopSize+k];
+                    }
+                    sqrSum += val*val;
+                }
+                m_featureRMS[i][j] = sqrt(sqrSum/winSize);
+            }
         }
-    }        // end of save to buffer
         
+        //ZERO CROSSING RATE
+        
+        SAMPLE m_featureZCR[nCols][nRows];
+        int zcc; // zero crossing count
+        for (int i = 0; i < nCols; ++i){
+            for (int j = 0; j < nRows; ++j){
+                zcc = 0;
+                for (int k = 0; k < winSize; ++k){
+                    if (j*hopSize+k+1 < bufSize){ // conceptually zero-padding
+                        // check the sign of two consecutive samples
+                        if (buffer[j*hopSize+k] < 0 && buffer[j*hopSize+k+1] > 0){
+                            ++zcc;
+                        }
+                        if (buffer[j*hopSize+k] > 0 && buffer[j*hopSize+k+1] < 0){
+                            ++zcc;
+                        }
+                    }
+                }
+                m_featureZCR[i][j] = (SAMPLE)zcc/winSize;
+            }
+        }
+        
+        sampleRMS = m_featureRMS[0][0];
+        sampleZCR = m_featureZCR[0][0];
+        
+        std::cout << "RMS" << sampleRMS  << std::endl;
+        std::cout << "ZCR" << sampleZCR  << std::endl;
+        
+        zeromem (saveBuf2, sizeof (saveBuf2)); //clear saveBuf2
+        
+    }
+
     for(int i = 0; i < numChannels; i++) {
         iteration++; //ensures proper indexing of saveBuf, necessitates modulo numChannels*100 because it is counting (numChannels times) as fast.
     }
     
     
-    //push to animation _ _ _ _ _ _ _ _ _ _ need to add different variables for different animation executions
+    //push to animation
     
-    accumulator += newSample; //
+    accumulatorRMS += sampleRMS;
+    accumulatorZCR += sampleZCR;
     
-    if (subSample == 0)
+    if (subSample == 0) //each time the saveBuf switches
     {
         const int inputSamplesPerPixel = numChannels*100;
         
-        samples[nextSample] = accumulator / inputSamplesPerPixel;
-        nextSample = (nextSample + 1) % numElementsInArray (samples);
+        samplesRMS[nextSampleRMS] = accumulatorRMS / inputSamplesPerPixel;
+        samplesZCR[nextSampleZCR] = accumulatorZCR / inputSamplesPerPixel;
+        nextSampleRMS = (nextSampleRMS + 1) % numElementsInArray (samplesRMS);
+        nextSampleZCR = (nextSampleZCR + 1) % numElementsInArray (samplesZCR);
         subSample = inputSamplesPerPixel;
-        accumulator = 0;
+        accumulatorRMS = 0;
+        accumulatorZCR = 0; 
     }
     else
     {
