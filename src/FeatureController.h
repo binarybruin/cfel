@@ -29,7 +29,7 @@ class FeatureController {
 		// output parameters
 		//FeatureExtraction*	m_feature;		// ***CHANGE TO ARRAY OF FEATURES?
 		FeatureExtraction*	m_featureRMS;
-		FeatureStatistics	m_featureStatObject;
+		//FeatureStatistics	m_featureStatObject;
 		
 		// input parameters from JUCE
 		SAMPLE*				m_buffer;
@@ -42,8 +42,8 @@ class FeatureController {
 		FeatureController(SAMPLE* buffer, int bufSize, int fs, int winSize, int hopSize);
 		~FeatureController();
 
-		void setFeature(SAMPLE* buffer, int bufSize, int fs, int winSize, int hopSize);	// create new Feature
-		SAMPLE** getRMSFeature();
+		void setFeature();	// create new Feature
+		FeatureRMS* getRMSFeature();
 		void exportFeatureData(); // xml
 			
 };

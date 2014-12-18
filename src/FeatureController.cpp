@@ -17,18 +17,27 @@
 
 #include <iostream>
 #include <fstream>
-using namespace std;
 
 // constructor/deconstructor
-void FeatureController::setFeature(SAMPLE* buffer, int bufSize, int fs, int winSize, int hopSize){
+FeatureController::FeatureController(SAMPLE* buffer, int bufSize, int fs, int winSize, int hopSize) {
+
+	m_buffer = (SAMPLE*)malloc(sizeof(SAMPLE) * bufSize);
+	memcpy(m_buffer, buffer, bufSize);
+	m_bufSize = bufSize;
+	m_fs = fs;
+	m_winSize = winSize;
+	m_hopSize = hopSize;
+}
+
+void FeatureController::setFeature(){
 	
-	m_featureRMS = new FeatureRMS::FeatureExtraction(buffer, bufSize, fs, winSize, hopSize);
+	m_featureRMS = new FeatureRMS::FeatureExtraction(m_buffer, m_bufSize, m_fs, m_winSize, m_hopSize);
 
 }
 
-SAMPLE** FeatureController::getRMSFeature() {
+FeatureRMS* FeatureController::getRMSFeature() {
 
-	return this->m_featureRMS->get_feature();
+	return (FeatureRMS*)m_featureRMS;
 
 }
 

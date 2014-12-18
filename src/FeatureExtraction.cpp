@@ -15,6 +15,7 @@
 
 #include "FeatureExtraction.h"
 #include <stdlib.h>
+#include <iostream>
 
 // constructor/deconstructor
 
@@ -57,9 +58,10 @@ void FeatureExtraction::set_signal(SAMPLE* signal){
 		return;
 	}
 	else{
-		int bufSize = get_bufSize();
-		this->m_signal = (SAMPLE*)malloc(sizeof(SAMPLE)*bufSize);
-		this->m_signal = signal;
+		//int bufSize = get_bufSize();
+		m_signal = (SAMPLE*)malloc(sizeof(SAMPLE)*m_bufSize);
+		//this->m_signal = signal;
+		memcpy(m_signal, signal, m_bufSize);
 	}
 }
 
