@@ -12,11 +12,8 @@ int main() {
 	int fs = 44100;
 	for (int i = 0; i < fs; ++i){
 		signal[i] = ((double)rand() / (RAND_MAX)) * 2 - 1;
+		signal[i] = ((double)rand() / (RAND_MAX)) * 2 - 1;
 	}
-
-	std::cout << signal[100] << std::endl;
-	std::cout << signal[1000] << std::endl;
-	std::cout << signal[10000] << std::endl;
 
 	FeatureController* controller = new FeatureController(signal, bufSize, fs, winSize, hopSize);
 
@@ -39,7 +36,7 @@ int main() {
 	std::cout << "rows: " << nRows << std::endl;
 
 	for (int i = 0; i < bufSize; i++) {
-		//std::cout << featureRMS->get_signal()[i] << std::endl;
+		std::cout << featureRMS->get_signal()[i] << std::endl;
 	}
 
 	SAMPLE** feature = featureRMS->get_feature();
