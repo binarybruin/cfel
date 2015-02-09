@@ -1,20 +1,29 @@
 # compiler type
 CC = g++
 
-# compiler flags
+# Targets and objects
+TARGET = test
+OBJS = Test.o ???
 
-CFLAGS = -Wall -g
-LDFLAGS = -lm
+# compiler flags
+CFLAGS = -Wall -c
+LFLAGS = -Wall
+DEBUG = -g
 
 # the build target executable:
 # what is the difference between target executable and .o files 
 TARGET = test
 
-test.o: test.cpp 
-	$(CC) $(LDFLAGS) test.cpp
 
-all: test.o
-	$(CC) $(CFLAGES) test.o $(LDFLAGS) -o test
+$(TARGET) : $(OBJS)
+	$(CC) $(LFLAGS) $(OBJS) -o $(TARGET)
+	
+	
+
+	
+	
+	
+	
 	
 clean:
 	rm -rf $(OBJECTS) $(TARGET) *.o
