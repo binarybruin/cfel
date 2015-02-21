@@ -1,29 +1,26 @@
-# compiler type
+TARGET = FeatureController.o
+OBJS = FeatureController.o FeatureRMS.o FeatureStatistics.o FeatureExtraction.o
 CC = g++
-
-# Targets and objects
-TARGET = test
-OBJS = Test.o ???
-
-# compiler flags
-CFLAGS = -Wall -c
-LFLAGS = -Wall
 DEBUG = -g
+CFLAGS = -Wall -c $(DEBUG)
+LFLAGS = -Wall $(DEBUG)
 
-# the build target executable:
-# what is the difference between target executable and .o files 
-TARGET = test
+test : $(TARGET)
+        $(CC) $(LFLAGS) $(OBJS) -o test
+
+FeatureController.o : FeatureController.h FeatureController.cpp FeatureExtraction.h FeatureExtraction.cpp FeatureStatistics.h FeatureStatistics.cpp FeatureClasses/FeatureRMS.h FeatureClasses/FeatureRMS.cpp
+        $(CC) $(CFLAGS) FeatureController.cpp
+
+FeatureRMS.o : FeatureClasses/FeatureRMS.h FeatureClasses/FeatureRMS.cpp
+        $(CC) $(CFLAGS) FeatureRMS.cpp
+
+FeatureStatistics.o : FeatureStatistics.h FeatureStatistics.cpp FeatureExtraction.h FeatureExtraction.cpp
+        $(CC) $(CFLAGS) FeatureStatistics.cpp
+
+FeatureExtraction.o : FeatureExtraction.h FeatureExtraction.cpp
+        $(CC) $(CFLAGS) FeatureExtraction.cpp
 
 
-$(TARGET) : $(OBJS)
-	$(CC) $(LFLAGS) $(OBJS) -o $(TARGET)
-	
-	
 
-	
-	
-	
-	
-	
-clean:
-	rm -rf $(OBJECTS) $(TARGET) *.o
+clean :
+        \rm *.o *~ test

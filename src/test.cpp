@@ -4,11 +4,7 @@
 #include <string>
 #include <string.h>
 
-
-
-
-
-// from the ftpupload?
+// _from the ftpupload.c
 
 #include <curl/curl.h> // external library
 #include <sys/types.h>
@@ -16,11 +12,10 @@
 #include <fcntl.h>
 #include <errno.h>
 
-
-#define LOCAL_FILE      "/tmp/uploadthis.txt"
-#define UPLOAD_FILE_AS  "while-uploading.txt"
+#define LOCAL_FILE      "/uploadrms.txt"
+#define UPLOAD_FILE_AS  "while-uploading-rms.txt"
 #define REMOTE_URL      "ftp://example.com/" 
-#define RENAME_FILE_TO  "renamed-and-fine.txt"
+#define RENAME_FILE_TO  "renamed-rms.txt"
 
 /* NOTE: if you want this example to work on Windows with libcurl as a
 DLL, you MUST also provide a read callback with CURLOPT_READFUNCTION.
@@ -42,7 +37,7 @@ static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
 	return retcode;
 }
 
-
+// _from the ftpupload.c
 
 
 int main() {
@@ -93,7 +88,7 @@ int main() {
 	char input;
 	std::cin >> input;
 	
-
+	// creat .txt file, write the rms value to it, name it "uploadrms.txt".
 
 
 
